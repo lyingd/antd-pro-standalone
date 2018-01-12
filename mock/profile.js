@@ -31,7 +31,7 @@ const basicGoods = [
     num: '3',
     amount: '25.50',
   },
-];
+]
 
 const basicProgress = [
   {
@@ -74,7 +74,7 @@ const basicProgress = [
     operator: '用户',
     cost: '5mins',
   },
-];
+]
 
 const advancedOperation1 = [
   {
@@ -117,7 +117,7 @@ const advancedOperation1 = [
     updatedAt: '2017-10-03  19:23:12',
     memo: '-',
   },
-];
+]
 
 const advancedOperation2 = [
   {
@@ -128,7 +128,7 @@ const advancedOperation2 = [
     updatedAt: '2017-10-03  19:23:12',
     memo: '-',
   },
-];
+]
 
 const advancedOperation3 = [
   {
@@ -139,20 +139,20 @@ const advancedOperation3 = [
     updatedAt: '2017-10-03  19:23:12',
     memo: '-',
   },
-];
+]
 
 export const getProfileBasicData = {
   basicGoods,
   basicProgress,
-};
+}
 
 export const getProfileAdvancedData = {
   advancedOperation1,
   advancedOperation2,
   advancedOperation3,
-};
+}
 
 export default {
   getProfileBasicData,
   getProfileAdvancedData,
-};
+}

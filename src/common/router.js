@@ -1,15 +1,15 @@
-import { createElement } from 'react';
-import dynamic from 'dva/dynamic';
-import { getMenuData } from './menu';
+import { createElement } from 'react'
+import dynamic from 'dva/dynamic'
+import { getMenuData } from './menu'
 
-let routerDataCache;
+let routerDataCache
 
 const modelNotExisted = (app, model) => (
   // eslint-disable-next-line
   !app._models.some(({ namespace }) => {
-    return namespace === model.substring(model.lastIndexOf('/') + 1);
+    return namespace === model.substring(model.lastIndexOf('/') + 1)
   })
-);
+)
 
 // wrapper of dynamic
 const dynamicWrapper = (app, models, component) => {
@@ -21,16 +21,16 @@ const dynamicWrapper = (app, models, component) => {
         // eslint-disable-next-line
         app.model(require(`../models/${model}`).default);
       }
-    });
+    })
     return (props) => {
       if (!routerDataCache) {
-        routerDataCache = getRouterData(app);
+        routerDataCache = getRouterData(app)
       }
       return createElement(component().default, {
         ...props,
         routerData: routerDataCache,
-      });
-    };
+      })
+    }
   }
   // () => import('module')
   return dynamic({
@@ -41,30 +41,30 @@ const dynamicWrapper = (app, models, component) => {
     // add routerData prop
     component: () => {
       if (!routerDataCache) {
-        routerDataCache = getRouterData(app);
+        routerDataCache = getRouterData(app)
       }
       return component().then((raw) => {
-        const Component = raw.default || raw;
+        const Component = raw.default || raw
         return props => createElement(Component, {
           ...props,
           routerData: routerDataCache,
-        });
-      });
+        })
+      })
     },
-  });
-};
+  })
+}
 
 function getFlatMenuData(menus) {
-  let keys = {};
+  let keys = {}
   menus.forEach((item) => {
     if (item.children) {
-      keys[item.path] = { ...item };
-      keys = { ...keys, ...getFlatMenuData(item.children) };
+      keys[item.path] = { ...item }
+      keys = { ...keys, ...getFlatMenuData(item.children) }
     } else {
-      keys[item.path] = { ...item };
+      keys[item.path] = { ...item }
     }
-  });
-  return keys;
+  })
+  return keys
 }
 
 export const getRouterData = (app) => {
@@ -162,17 +162,17 @@ export const getRouterData = (app) => {
     // '/user/:id': {
     //   component: dynamicWrapper(app, [], () => import('../routes/User/SomeComponent')),
     // },
-  };
+  }
   // Get name from ./menu.js or just set it in the router data.
-  const menuData = getFlatMenuData(getMenuData());
-  const routerData = {};
+  const menuData = getFlatMenuData(getMenuData())
+  const routerData = {}
   Object.keys(routerConfig).forEach((item) => {
-    const menuItem = menuData[item.replace(/^\//, '')] || {};
+    const menuItem = menuData[item.replace(/^\//, '')] || {}
     routerData[item] = {
       ...routerConfig[item],
       name: routerConfig[item].name || menuItem.name,
       authority: routerConfig[item].authority || menuItem.authority,
-    };
-  });
-  return routerData;
-};
+    }
+  })
+  return routerData
+}

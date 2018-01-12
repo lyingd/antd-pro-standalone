@@ -1,42 +1,42 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Layout, Icon, message } from 'antd';
-import DocumentTitle from 'react-document-title';
-import { connect } from 'dva';
-import { Route, Redirect, Switch } from 'dva/router';
-import { ContainerQuery } from 'react-container-query';
-import classNames from 'classnames';
-import { enquireScreen } from 'enquire-js';
-import GlobalHeader from 'ant-design-pro/lib/GlobalHeader';
-import GlobalFooter from 'ant-design-pro/lib/GlobalFooter';
-import SiderMenu from 'ant-design-pro/lib/SiderMenu';
-import NotFound from '../routes/Exception/404';
-import { getRoutes } from '../utils/utils';
-import Authorized from '../utils/Authorized';
-import { getMenuData } from '../common/menu';
-import logo from '../assets/logo.svg';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Layout, Icon, message } from 'antd'
+import DocumentTitle from 'react-document-title'
+import { connect } from 'dva'
+import { Route, Redirect, Switch } from 'dva/router'
+import { ContainerQuery } from 'react-container-query'
+import classNames from 'classnames'
+import { enquireScreen } from 'enquire-js'
+import GlobalHeader from 'ant-design-pro/lib/GlobalHeader'
+import GlobalFooter from 'ant-design-pro/lib/GlobalFooter'
+import SiderMenu from 'ant-design-pro/lib/SiderMenu'
+import NotFound from '../routes/Exception/404'
+import { getRoutes } from '../utils/utils'
+import Authorized from '../utils/Authorized'
+import { getMenuData } from '../common/menu'
+import logo from '../assets/logo.svg'
 
-const { Content } = Layout;
-const { AuthorizedRoute } = Authorized;
+const { Content } = Layout
+const { AuthorizedRoute } = Authorized
 
 /**
  * 根据菜单取得重定向地址.
  */
-const redirectData = [];
+const redirectData = []
 const getRedirect = (item) => {
   if (item && item.children) {
     if (item.children[0] && item.children[0].path) {
       redirectData.push({
         from: `/${item.path}`,
         to: `/${item.children[0].path}`,
-      });
+      })
       item.children.forEach((children) => {
-        getRedirect(children);
-      });
+        getRedirect(children)
+      })
     }
   }
-};
-getMenuData().forEach(getRedirect);
+}
+getMenuData().forEach(getRedirect)
 
 const query = {
   'screen-xs': {
@@ -57,12 +57,12 @@ const query = {
   'screen-xl': {
     minWidth: 1200,
   },
-};
+}
 
-let isMobile;
+let isMobile
 enquireScreen((b) => {
-  isMobile = b;
-});
+  isMobile = b
+})
 
 class BasicLayout extends React.PureComponent {
   static childContextTypes = {
@@ -73,62 +73,62 @@ class BasicLayout extends React.PureComponent {
     isMobile,
   };
   getChildContext() {
-    const { location, routerData } = this.props;
+    const { location, routerData } = this.props
     return {
       location,
       breadcrumbNameMap: routerData,
-    };
+    }
   }
   componentDidMount() {
     enquireScreen((mobile) => {
       this.setState({
         isMobile: mobile,
-      });
-    });
+      })
+    })
     this.props.dispatch({
       type: 'user/fetchCurrent',
-    });
+    })
   }
   getPageTitle() {
-    const { routerData, location } = this.props;
-    const { pathname } = location;
-    let title = 'Ant Design Pro';
+    const { routerData, location } = this.props
+    const { pathname } = location
+    let title = 'Ant Design Pro'
     if (routerData[pathname] && routerData[pathname].name) {
-      title = `${routerData[pathname].name} - Ant Design Pro`;
+      title = `${routerData[pathname].name} - Ant Design Pro`
     }
-    return title;
+    return title
   }
   handleMenuCollapse = (collapsed) => {
     this.props.dispatch({
       type: 'global/changeLayoutCollapsed',
       payload: collapsed,
-    });
+    })
   }
   handleNoticeClear = (type) => {
-    message.success(`清空了${type}`);
+    message.success(`清空了${type}`)
     this.props.dispatch({
       type: 'global/clearNotices',
       payload: type,
-    });
+    })
   }
   handleMenuClick = ({ key }) => {
     if (key === 'logout') {
       this.props.dispatch({
         type: 'login/logout',
-      });
+      })
     }
   }
   handleNoticeVisibleChange = (visible) => {
     if (visible) {
       this.props.dispatch({
         type: 'global/fetchNotices',
-      });
+      })
     }
   }
   render() {
     const {
       currentUser, collapsed, fetchingNotices, notices, routerData, match, location,
-    } = this.props;
+    } = this.props
     const layout = (
       <Layout>
         <SiderMenu
@@ -208,7 +208,7 @@ class BasicLayout extends React.PureComponent {
           </Content>
         </Layout>
       </Layout>
-    );
+    )
 
     return (
       <DocumentTitle title={this.getPageTitle()}>
@@ -216,7 +216,7 @@ class BasicLayout extends React.PureComponent {
           {params => <div className={classNames(params)}>{layout}</div>}
         </ContainerQuery>
       </DocumentTitle>
-    );
+    )
   }
 }
 
@@ -225,4 +225,4 @@ export default connect(({ user, global, loading }) => ({
   collapsed: global.collapsed,
   fetchingNotices: loading.effects['global/fetchNotices'],
   notices: global.notices,
-}))(BasicLayout);
+}))(BasicLayout)

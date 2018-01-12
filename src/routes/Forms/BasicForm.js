@@ -1,15 +1,15 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'dva';
+import React, { PureComponent } from 'react'
+import { connect } from 'dva'
 import {
   Form, Input, DatePicker, Select, Button, Card, InputNumber, Radio, Icon, Tooltip,
-} from 'antd';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import styles from './style.less';
+} from 'antd'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import styles from './style.less'
 
-const FormItem = Form.Item;
-const { Option } = Select;
-const { RangePicker } = DatePicker;
-const { TextArea } = Input;
+const FormItem = Form.Item
+const { Option } = Select
+const { RangePicker } = DatePicker
+const { TextArea } = Input
 
 @connect(({ loading }) => ({
   submitting: loading.effects['form/submitRegularForm'],
@@ -17,19 +17,19 @@ const { TextArea } = Input;
 @Form.create()
 export default class BasicForms extends PureComponent {
   handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         this.props.dispatch({
           type: 'form/submitRegularForm',
           payload: values,
-        });
+        })
       }
-    });
+    })
   }
   render() {
-    const { submitting } = this.props;
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { submitting } = this.props
+    const { getFieldDecorator, getFieldValue } = this.props.form
 
     const formItemLayout = {
       labelCol: {
@@ -41,14 +41,14 @@ export default class BasicForms extends PureComponent {
         sm: { span: 12 },
         md: { span: 10 },
       },
-    };
+    }
 
     const submitFormLayout = {
       wrapperCol: {
         xs: { span: 24, offset: 0 },
         sm: { span: 10, offset: 7 },
       },
-    };
+    }
 
     return (
       <PageHeaderLayout title="基础表单" content="表单页用于向用户收集或验证信息，基础表单常见于数据项较少的表单场景。">
@@ -183,6 +183,6 @@ export default class BasicForms extends PureComponent {
           </Form>
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

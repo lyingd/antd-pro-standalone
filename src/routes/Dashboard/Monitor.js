@@ -1,23 +1,23 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'dva';
-import { Row, Col, Card, Tooltip } from 'antd';
-import numeral from 'numeral';
-import Authorized from '../../utils/Authorized';
-import { Pie, WaterWave, Gauge, TagCloud } from 'ant-design-pro/lib/Charts';
-import NumberInfo from 'ant-design-pro/lib/NumberInfo';
-import CountDown from 'ant-design-pro/lib/CountDown';
-import ActiveChart from 'ant-design-pro/lib/ActiveChart';
-import styles from './Monitor.less';
+import React, { PureComponent } from 'react'
+import { connect } from 'dva'
+import { Row, Col, Card, Tooltip } from 'antd'
+import numeral from 'numeral'
+import Authorized from '../../utils/Authorized'
+import { Pie, WaterWave, Gauge, TagCloud } from 'ant-design-pro/lib/Charts'
+import NumberInfo from 'ant-design-pro/lib/NumberInfo'
+import CountDown from 'ant-design-pro/lib/CountDown'
+import ActiveChart from 'ant-design-pro/lib/ActiveChart'
+import styles from './Monitor.less'
 
-const { Secured } = Authorized;
+const { Secured } = Authorized
 
-const targetTime = new Date().getTime() + 3900000;
+const targetTime = new Date().getTime() + 3900000
 
 // use permission as a parameter
 const havePermissionAsync = new Promise((resolve) => {
   // Call resolve on behalf of passed
-  setTimeout(() => resolve(), 1000);
-});
+  setTimeout(() => resolve(), 1000)
+})
 @Secured(havePermissionAsync)
 @connect(({ monitor, loading }) => ({
   monitor,
@@ -27,12 +27,12 @@ export default class Monitor extends PureComponent {
   componentDidMount() {
     this.props.dispatch({
       type: 'monitor/fetchTags',
-    });
+    })
   }
 
   render() {
-    const { monitor, loading } = this.props;
-    const { tags } = monitor;
+    const { monitor, loading } = this.props
+    const { tags } = monitor
 
     return (
       <div>
@@ -85,15 +85,15 @@ export default class Monitor extends PureComponent {
                 format={(val) => {
                   switch (parseInt(val, 10)) {
                     case 20:
-                      return '差';
+                      return '差'
                     case 40:
-                      return '中';
+                      return '中'
                     case 60:
-                      return '良';
+                      return '良'
                     case 80:
-                      return '优';
+                      return '优'
                     default:
-                      return '';
+                      return ''
                   }
                 }}
                 title="跳出率"
@@ -166,6 +166,6 @@ export default class Monitor extends PureComponent {
           </Col>
         </Row>
       </div>
-    );
+    )
   }
 }

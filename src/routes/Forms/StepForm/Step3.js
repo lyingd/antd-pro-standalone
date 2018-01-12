@@ -1,16 +1,16 @@
-import React from 'react';
-import { connect } from 'dva';
-import { Button, Row, Col } from 'antd';
-import { routerRedux } from 'dva/router';
-import Result from 'ant-design-pro/lib/Result';
-import styles from './style.less';
+import React from 'react'
+import { connect } from 'dva'
+import { Button, Row, Col } from 'antd'
+import { routerRedux } from 'dva/router'
+import Result from 'ant-design-pro/lib/Result'
+import styles from './style.less'
 
 class Step3 extends React.PureComponent {
   render() {
-    const { dispatch, data } = this.props;
+    const { dispatch, data } = this.props
     const onFinish = () => {
-      dispatch(routerRedux.push('/form/step-form'));
-    };
+      dispatch(routerRedux.push('/form/step-form'))
+    }
     const information = (
       <div className={styles.information}>
         <Row>
@@ -30,7 +30,7 @@ class Step3 extends React.PureComponent {
           <Col span={16}><span className={styles.money}>{data.amount}</span> 元</Col>
         </Row>
       </div>
-    );
+    )
     const actions = (
       <div>
         <Button type="primary" onClick={onFinish}>
@@ -40,7 +40,7 @@ class Step3 extends React.PureComponent {
           查看账单
         </Button>
       </div>
-    );
+    )
     return (
       <Result
         type="success"
@@ -50,10 +50,10 @@ class Step3 extends React.PureComponent {
         actions={actions}
         className={styles.result}
       />
-    );
+    )
   }
 }
 
 export default connect(({ form }) => ({
   data: form.step,
-}))(Step3);
+}))(Step3)

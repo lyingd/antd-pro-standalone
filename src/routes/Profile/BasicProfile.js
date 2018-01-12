@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { Card, Badge, Table, Divider } from 'antd';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import DescriptionList from 'ant-design-pro/lib/DescriptionList';
-import styles from './BasicProfile.less';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { Card, Badge, Table, Divider } from 'antd'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import DescriptionList from 'ant-design-pro/lib/DescriptionList'
+import styles from './BasicProfile.less'
 
-const { Description } = DescriptionList;
+const { Description } = DescriptionList
 
 const progressColumns = [{
   title: '时间',
@@ -30,7 +30,7 @@ const progressColumns = [{
   title: '耗时',
   dataIndex: 'cost',
   key: 'cost',
-}];
+}]
 
 @connect(({ profile, loading }) => ({
   profile,
@@ -38,53 +38,53 @@ const progressColumns = [{
 }))
 export default class BasicProfile extends Component {
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     dispatch({
       type: 'profile/fetchBasic',
-    });
+    })
   }
 
   render() {
-    const { profile, loading } = this.props;
-    const { basicGoods, basicProgress } = profile;
-    let goodsData = [];
+    const { profile, loading } = this.props
+    const { basicGoods, basicProgress } = profile
+    let goodsData = []
     if (basicGoods.length) {
-      let num = 0;
-      let amount = 0;
+      let num = 0
+      let amount = 0
       basicGoods.forEach((item) => {
-        num += Number(item.num);
-        amount += Number(item.amount);
-      });
+        num += Number(item.num)
+        amount += Number(item.amount)
+      })
       goodsData = basicGoods.concat({
         id: '总计',
         num,
         amount,
-      });
+      })
     }
     const renderContent = (value, row, index) => {
       const obj = {
         children: value,
         props: {},
-      };
-      if (index === basicGoods.length) {
-        obj.props.colSpan = 0;
       }
-      return obj;
-    };
+      if (index === basicGoods.length) {
+        obj.props.colSpan = 0
+      }
+      return obj
+    }
     const goodsColumns = [{
       title: '商品编号',
       dataIndex: 'id',
       key: 'id',
       render: (text, row, index) => {
         if (index < basicGoods.length) {
-          return <a href="">{text}</a>;
+          return <a href="">{text}</a>
         }
         return {
           children: <span style={{ fontWeight: 600 }}>总计</span>,
           props: {
             colSpan: 4,
           },
-        };
+        }
       },
     }, {
       title: '商品名称',
@@ -109,9 +109,9 @@ export default class BasicProfile extends Component {
       align: 'right',
       render: (text, row, index) => {
         if (index < basicGoods.length) {
-          return text;
+          return text
         }
-        return <span style={{ fontWeight: 600 }}>{text}</span>;
+        return <span style={{ fontWeight: 600 }}>{text}</span>
       },
     }, {
       title: '金额',
@@ -120,11 +120,11 @@ export default class BasicProfile extends Component {
       align: 'right',
       render: (text, row, index) => {
         if (index < basicGoods.length) {
-          return text;
+          return text
         }
-        return <span style={{ fontWeight: 600 }}>{text}</span>;
+        return <span style={{ fontWeight: 600 }}>{text}</span>
       },
-    }];
+    }]
     return (
       <PageHeaderLayout title="基础详情页">
         <Card bordered={false}>
@@ -162,6 +162,6 @@ export default class BasicProfile extends Component {
           />
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

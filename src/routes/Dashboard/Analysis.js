@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
+import React, { Component } from 'react'
+import { connect } from 'dva'
 import {
   Row,
   Col,
@@ -12,8 +12,8 @@ import {
   Tooltip,
   Menu,
   Dropdown,
-} from 'antd';
-import numeral from 'numeral';
+} from 'antd'
+import numeral from 'numeral'
 import {
   ChartCard,
   yuan,
@@ -24,22 +24,22 @@ import {
   Bar,
   Pie,
   TimelineChart,
-} from 'ant-design-pro/lib/Charts';
-import Trend from 'ant-design-pro/lib/Trend';
-import NumberInfo from 'ant-design-pro/lib/NumberInfo';
-import { getTimeDistance } from '../../utils/utils';
+} from 'ant-design-pro/lib/Charts'
+import Trend from 'ant-design-pro/lib/Trend'
+import NumberInfo from 'ant-design-pro/lib/NumberInfo'
+import { getTimeDistance } from '../../utils/utils'
 
-import styles from './Analysis.less';
+import styles from './Analysis.less'
 
-const { TabPane } = Tabs;
-const { RangePicker } = DatePicker;
+const { TabPane } = Tabs
+const { RangePicker } = DatePicker
 
-const rankingListData = [];
+const rankingListData = []
 for (let i = 0; i < 7; i += 1) {
   rankingListData.push({
     title: `工专路 ${i} 号店`,
     total: 323234,
-  });
+  })
 }
 
 @connect(({ chart, loading }) => ({
@@ -56,65 +56,65 @@ export default class Analysis extends Component {
   componentDidMount() {
     this.props.dispatch({
       type: 'chart/fetch',
-    });
+    })
   }
 
   componentWillUnmount() {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     dispatch({
       type: 'chart/clear',
-    });
+    })
   }
 
   handleChangeSalesType = (e) => {
     this.setState({
       salesType: e.target.value,
-    });
+    })
   };
 
   handleTabChange = (key) => {
     this.setState({
       currentTabKey: key,
-    });
+    })
   };
 
   handleRangePickerChange = (rangePickerValue) => {
     this.setState({
       rangePickerValue,
-    });
+    })
 
     this.props.dispatch({
       type: 'chart/fetchSalesData',
-    });
+    })
   };
 
   selectDate = (type) => {
     this.setState({
       rangePickerValue: getTimeDistance(type),
-    });
+    })
 
     this.props.dispatch({
       type: 'chart/fetchSalesData',
-    });
+    })
   };
 
   isActive(type) {
-    const { rangePickerValue } = this.state;
-    const value = getTimeDistance(type);
+    const { rangePickerValue } = this.state
+    const value = getTimeDistance(type)
     if (!rangePickerValue[0] || !rangePickerValue[1]) {
-      return;
+      return
     }
     if (
       rangePickerValue[0].isSame(value[0], 'day') &&
       rangePickerValue[1].isSame(value[1], 'day')
     ) {
-      return styles.currentDate;
+      return styles.currentDate
     }
   }
 
   render() {
-    const { rangePickerValue, salesType, currentTabKey } = this.state;
-    const { chart, loading } = this.props;
+    const { rangePickerValue, salesType, currentTabKey } = this.state
+    const { chart, loading } = this.props
     const {
       visitData,
       visitData2,
@@ -125,19 +125,19 @@ export default class Analysis extends Component {
       salesTypeData,
       salesTypeDataOnline,
       salesTypeDataOffline,
-    } = chart;
+    } = chart
 
     const salesPieData =
       salesType === 'all'
         ? salesTypeData
-        : salesType === 'online' ? salesTypeDataOnline : salesTypeDataOffline;
+        : salesType === 'online' ? salesTypeDataOnline : salesTypeDataOffline
 
     const menu = (
       <Menu>
         <Menu.Item>操作一</Menu.Item>
         <Menu.Item>操作二</Menu.Item>
       </Menu>
-    );
+    )
 
     const iconGroup = (
       <span className={styles.iconGroup}>
@@ -145,7 +145,7 @@ export default class Analysis extends Component {
           <Icon type="ellipsis" />
         </Dropdown>
       </span>
-    );
+    )
 
     const salesExtra = (
       <div className={styles.salesExtraWrap}>
@@ -169,7 +169,7 @@ export default class Analysis extends Component {
           style={{ width: 256 }}
         />
       </div>
-    );
+    )
 
     const columns = [
       {
@@ -202,9 +202,9 @@ export default class Analysis extends Component {
         ),
         align: 'right',
       },
-    ];
+    ]
 
-    const activeKey = currentTabKey || (offlineData[0] && offlineData[0].name);
+    const activeKey = currentTabKey || (offlineData[0] && offlineData[0].name)
 
     const CustomTab = ({ data, currentTabKey: currentKey }) => (
       <Row gutter={8} style={{ width: 138, margin: '8px 0' }}>
@@ -229,7 +229,7 @@ export default class Analysis extends Component {
           />
         </Col>
       </Row>
-    );
+    )
 
     const topColResponsiveProps = {
       xs: 24,
@@ -238,7 +238,7 @@ export default class Analysis extends Component {
       lg: 12,
       xl: 6,
       style: { marginBottom: 24 },
-    };
+    }
 
     return (
       <div>
@@ -483,6 +483,6 @@ export default class Analysis extends Component {
           </Tabs>
         </Card>
       </div>
-    );
+    )
   }
 }

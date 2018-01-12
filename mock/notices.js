@@ -92,8 +92,8 @@ export const getNotices = (req, res) => {
       status: 'processing',
       type: '待办',
     },
-  ]);
-};
+  ])
+}
 export default {
   getNotices,
-};
+}

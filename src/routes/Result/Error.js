@@ -1,7 +1,7 @@
-import React from 'react';
-import { Button, Icon, Card } from 'antd';
-import Result from 'ant-design-pro/lib/Result';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import React from 'react'
+import { Button, Icon, Card } from 'antd'
+import Result from 'ant-design-pro/lib/Result'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 const extra = (
   <div>
@@ -17,9 +17,9 @@ const extra = (
       <a style={{ marginLeft: 16 }}>立即升级 <Icon type="right" /></a>
     </div>
   </div>
-);
+)
 
-const actions = <Button type="primary">返回修改</Button>;
+const actions = <Button type="primary">返回修改</Button>
 
 export default () => (
   <PageHeaderLayout>
@@ -34,4 +34,4 @@ export default () => (
       />
     </Card>
   </PageHeaderLayout>
-);
+)

@@ -1,27 +1,27 @@
-import React, { PureComponent } from 'react';
-import numeral from 'numeral';
-import { connect } from 'dva';
-import { Row, Col, Form, Card, Select, Icon, Avatar, List, Tooltip, Dropdown, Menu } from 'antd';
+import React, { PureComponent } from 'react'
+import numeral from 'numeral'
+import { connect } from 'dva'
+import { Row, Col, Form, Card, Select, Icon, Avatar, List, Tooltip, Dropdown, Menu } from 'antd'
 
-import StandardFormRow from 'ant-design-pro/lib/StandardFormRow';
-import TagSelect from 'ant-design-pro/lib/TagSelect';
+import StandardFormRow from 'ant-design-pro/lib/StandardFormRow'
+import TagSelect from 'ant-design-pro/lib/TagSelect'
 
-import styles from './Applications.less';
+import styles from './Applications.less'
 
-const { Option } = Select;
-const FormItem = Form.Item;
+const { Option } = Select
+const FormItem = Form.Item
 
 const formatWan = (val) => {
-  const v = val * 1;
-  if (!v || isNaN(v)) return '';
+  const v = val * 1
+  if (!v || isNaN(v)) return ''
 
-  let result = val;
+  let result = val
   if (val > 10000) {
-    result = Math.floor(val / 10000);
-    result = <span>{result}<em className={styles.wan}>万</em></span>;
+    result = Math.floor(val / 10000)
+    result = <span>{result}<em className={styles.wan}>万</em></span>
   }
-  return result;
-};
+  return result
+}
 
 /* eslint react/no-array-index-key: 0 */
 @Form.create()
@@ -36,11 +36,11 @@ export default class FilterCardList extends PureComponent {
       payload: {
         count: 8,
       },
-    });
+    })
   }
 
   handleFormSubmit = () => {
-    const { form, dispatch } = this.props;
+    const { form, dispatch } = this.props
     // setTimeout 用于保证获取表单值是在所有表单字段更新完毕的时候
     setTimeout(() => {
       form.validateFields((err) => {
@@ -51,15 +51,15 @@ export default class FilterCardList extends PureComponent {
             payload: {
               count: 8,
             },
-          });
+          })
         }
-      });
-    }, 0);
+      })
+    }, 0)
   }
 
   render() {
-    const { list: { list }, loading, form } = this.props;
-    const { getFieldDecorator } = form;
+    const { list: { list }, loading, form } = this.props
+    const { getFieldDecorator } = form
 
     const CardInfo = ({ activeUser, newUser }) => (
       <div className={styles.cardInfo}>
@@ -72,14 +72,14 @@ export default class FilterCardList extends PureComponent {
           <p>{newUser}</p>
         </div>
       </div>
-    );
+    )
 
     const formItemLayout = {
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 16 },
       },
-    };
+    }
 
     const itemMenu = (
       <Menu>
@@ -93,7 +93,7 @@ export default class FilterCardList extends PureComponent {
           <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">3d menu item</a>
         </Menu.Item>
       </Menu>
-    );
+    )
 
     return (
       <div className={styles.filterCardList}>
@@ -195,6 +195,6 @@ export default class FilterCardList extends PureComponent {
           )}
         />
       </div>
-    );
+    )
   }
 }

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { connect } from 'dva';
-import { Link } from 'dva/router';
-import { Checkbox, Alert, Icon } from 'antd';
-import Login from 'ant-design-pro/lib/Login';
-import styles from './Login.less';
+import React, { Component } from 'react'
+import { connect } from 'dva'
+import { Link } from 'dva/router'
+import { Checkbox, Alert, Icon } from 'antd'
+import Login from 'ant-design-pro/lib/Login'
+import styles from './Login.less'
 
-const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login;
+const { Tab, UserName, Password, Mobile, Captcha, Submit } = Login
 
 @connect(({ login, loading }) => ({
   login,
@@ -18,11 +18,11 @@ export default class LoginPage extends Component {
   }
 
   onTabChange = (type) => {
-    this.setState({ type });
+    this.setState({ type })
   }
 
   handleSubmit = (err, values) => {
-    const { type } = this.state;
+    const { type } = this.state
     if (!err) {
       this.props.dispatch({
         type: 'login/login',
@@ -30,25 +30,25 @@ export default class LoginPage extends Component {
           ...values,
           type,
         },
-      });
+      })
     }
   }
 
   changeAutoLogin = (e) => {
     this.setState({
       autoLogin: e.target.checked,
-    });
+    })
   }
 
   renderMessage = (content) => {
     return (
       <Alert style={{ marginBottom: 24 }} message={content} type="error" showIcon />
-    );
+    )
   }
 
   render() {
-    const { login, submitting } = this.props;
-    const { type } = this.state;
+    const { login, submitting } = this.props
+    const { type } = this.state
     return (
       <div className={styles.main}>
         <Login
@@ -90,6 +90,6 @@ export default class LoginPage extends Component {
           </div>
         </Login>
       </div>
-    );
+    )
   }
 }

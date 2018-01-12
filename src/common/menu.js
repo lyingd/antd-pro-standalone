@@ -115,7 +115,7 @@ const menuData = [{
   icon: 'book',
   path: 'http://pro.ant.design/docs/getting-started',
   target: '_blank',
-}];
+}]
 
 function formatter(data, parentPath = '', parentAuthority) {
   return data.map((item) => {
@@ -123,12 +123,12 @@ function formatter(data, parentPath = '', parentAuthority) {
       ...item,
       path: `${parentPath}${item.path}`,
       authority: item.authority || parentAuthority,
-    };
-    if (item.children) {
-      result.children = formatter(item.children, `${parentPath}${item.path}/`, item.authority);
     }
-    return result;
-  });
+    if (item.children) {
+      result.children = formatter(item.children, `${parentPath}${item.path}/`, item.authority)
+    }
+    return result
+  })
 }
 
-export const getMenuData = () => formatter(menuData);
+export const getMenuData = () => formatter(menuData)

@@ -1,14 +1,14 @@
-import React, { PureComponent } from 'react';
-import moment from 'moment';
-import { connect } from 'dva';
-import { Link } from 'dva/router';
-import { Row, Col, Card, List, Avatar } from 'antd';
+import React, { PureComponent } from 'react'
+import moment from 'moment'
+import { connect } from 'dva'
+import { Link } from 'dva/router'
+import { Row, Col, Card, List, Avatar } from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import EditableLinkGroup from 'ant-design-pro/lib/EditableLinkGroup';
-import { Radar } from 'ant-design-pro/lib/Charts';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import EditableLinkGroup from 'ant-design-pro/lib/EditableLinkGroup'
+import { Radar } from 'ant-design-pro/lib/Charts'
 
-import styles from './Workplace.less';
+import styles from './Workplace.less'
 
 const links = [
   {
@@ -35,7 +35,7 @@ const links = [
     title: '操作六',
     href: '',
   },
-];
+]
 
 const members = [
   {
@@ -68,7 +68,7 @@ const members = [
     logo: 'https://gw.alipayobjects.com/zos/rmsportal/WhxKECPNujWoWEFNdnJE.png',
     link: '',
   },
-];
+]
 
 @connect(({ project, activities, chart, loading }) => ({
   project,
@@ -79,36 +79,36 @@ const members = [
 }))
 export default class Workplace extends PureComponent {
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     dispatch({
       type: 'project/fetchNotice',
-    });
+    })
     dispatch({
       type: 'activities/fetchList',
-    });
+    })
     dispatch({
       type: 'chart/fetch',
-    });
+    })
   }
 
   componentWillUnmount() {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     dispatch({
       type: 'chart/clear',
-    });
+    })
   }
 
   renderActivities() {
     const {
       activities: { list },
-    } = this.props;
+    } = this.props
     return list.map((item) => {
       const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
         if (item[key]) {
-          return <a href={item[key].link} key={item[key].name}>{item[key].name}</a>;
+          return <a href={item[key].link} key={item[key].name}>{item[key].name}</a>
         }
-        return key;
-      });
+        return key
+      })
       return (
         <List.Item key={item.id}>
           <List.Item.Meta
@@ -127,8 +127,8 @@ export default class Workplace extends PureComponent {
             }
           />
         </List.Item>
-      );
-    });
+      )
+    })
   }
 
   render() {
@@ -137,7 +137,7 @@ export default class Workplace extends PureComponent {
       projectLoading,
       activitiesLoading,
       chart: { radarData },
-    } = this.props;
+    } = this.props
 
     const pageHeaderContent = (
       <div className={styles.pageHeaderContent}>
@@ -149,7 +149,7 @@ export default class Workplace extends PureComponent {
           <div>交互专家 | 蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED</div>
         </div>
       </div>
-    );
+    )
 
     const extraContent = (
       <div className={styles.extraContent}>
@@ -166,7 +166,7 @@ export default class Workplace extends PureComponent {
           <p>2,223</p>
         </div>
       </div>
-    );
+    )
 
     return (
       <PageHeaderLayout
@@ -270,6 +270,6 @@ export default class Workplace extends PureComponent {
           </Col>
         </Row>
       </PageHeaderLayout>
-    );
+    )
   }
 }

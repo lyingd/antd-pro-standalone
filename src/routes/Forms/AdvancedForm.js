@@ -1,13 +1,13 @@
-import React, { PureComponent } from 'react';
-import { Card, Button, Form, Icon, Col, Row, DatePicker, TimePicker, Input, Select, Popover } from 'antd';
-import { connect } from 'dva';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import FooterToolbar from 'ant-design-pro/lib/FooterToolbar';
-import TableForm from './TableForm';
-import styles from './style.less';
+import React, { PureComponent } from 'react'
+import { Card, Button, Form, Icon, Col, Row, DatePicker, TimePicker, Input, Select, Popover } from 'antd'
+import { connect } from 'dva'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import FooterToolbar from 'ant-design-pro/lib/FooterToolbar'
+import TableForm from './TableForm'
+import styles from './style.less'
 
-const { Option } = Select;
-const { RangePicker } = DatePicker;
+const { Option } = Select
+const { RangePicker } = DatePicker
 
 const fieldLabels = {
   name: '仓库名',
@@ -22,7 +22,7 @@ const fieldLabels = {
   approver2: '责任人',
   dateRange2: '生效日期',
   type2: '任务类型',
-};
+}
 
 const tableData = [{
   key: '1',
@@ -39,28 +39,28 @@ const tableData = [{
   workId: '00003',
   name: 'Joe Black',
   department: 'Sidney No. 1 Lake Park',
-}];
+}]
 
 class AdvancedForm extends PureComponent {
   state = {
     width: '100%',
   };
   componentDidMount() {
-    window.addEventListener('resize', this.resizeFooterToolbar);
+    window.addEventListener('resize', this.resizeFooterToolbar)
   }
   componentWillUnmount() {
-    window.removeEventListener('resize', this.resizeFooterToolbar);
+    window.removeEventListener('resize', this.resizeFooterToolbar)
   }
   resizeFooterToolbar = () => {
-    const sider = document.querySelectorAll('.ant-layout-sider')[0];
-    const width = `calc(100% - ${sider.style.width})`;
+    const sider = document.querySelectorAll('.ant-layout-sider')[0]
+    const width = `calc(100% - ${sider.style.width})`
     if (this.state.width !== width) {
-      this.setState({ width });
+      this.setState({ width })
     }
   }
   render() {
-    const { form, dispatch, submitting } = this.props;
-    const { getFieldDecorator, validateFieldsAndScroll, getFieldsError } = form;
+    const { form, dispatch, submitting } = this.props
+    const { getFieldDecorator, validateFieldsAndScroll, getFieldsError } = form
     const validate = () => {
       validateFieldsAndScroll((error, values) => {
         if (!error) {
@@ -68,25 +68,25 @@ class AdvancedForm extends PureComponent {
           dispatch({
             type: 'form/submitAdvancedForm',
             payload: values,
-          });
+          })
         }
-      });
-    };
-    const errors = getFieldsError();
+      })
+    }
+    const errors = getFieldsError()
     const getErrorInfo = () => {
-      const errorCount = Object.keys(errors).filter(key => errors[key]).length;
+      const errorCount = Object.keys(errors).filter(key => errors[key]).length
       if (!errors || errorCount === 0) {
-        return null;
+        return null
       }
       const scrollToField = (fieldKey) => {
-        const labelNode = document.querySelector(`label[for="${fieldKey}"]`);
+        const labelNode = document.querySelector(`label[for="${fieldKey}"]`)
         if (labelNode) {
-          labelNode.scrollIntoView(true);
+          labelNode.scrollIntoView(true)
         }
-      };
+      }
       const errorList = Object.keys(errors).map((key) => {
         if (!errors[key]) {
-          return null;
+          return null
         }
         return (
           <li key={key} className={styles.errorListItem} onClick={() => scrollToField(key)}>
@@ -94,8 +94,8 @@ class AdvancedForm extends PureComponent {
             <div className={styles.errorMessage}>{errors[key][0]}</div>
             <div className={styles.errorField}>{fieldLabels[key]}</div>
           </li>
-        );
-      });
+        )
+      })
       return (
         <span className={styles.errorIcon}>
           <Popover
@@ -109,8 +109,8 @@ class AdvancedForm extends PureComponent {
           </Popover>
           {errorCount}
         </span>
-      );
-    };
+      )
+    }
     return (
       <PageHeaderLayout
         title="高级表单"
@@ -280,11 +280,11 @@ class AdvancedForm extends PureComponent {
           </Button>
         </FooterToolbar>
       </PageHeaderLayout>
-    );
+    )
   }
 }
 
 export default connect(({ global, loading }) => ({
   collapsed: global.collapsed,
   submitting: loading.effects['form/submitAdvancedForm'],
-}))(Form.create()(AdvancedForm));
+}))(Form.create()(AdvancedForm))

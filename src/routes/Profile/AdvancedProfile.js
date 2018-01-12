@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import Debounce from 'lodash-decorators/debounce';
-import Bind from 'lodash-decorators/bind';
-import { connect } from 'dva';
-import { Button, Menu, Dropdown, Icon, Row, Col, Steps, Card, Popover, Badge, Table, Tooltip, Divider } from 'antd';
-import classNames from 'classnames';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import DescriptionList from 'ant-design-pro/lib/DescriptionList';
-import styles from './AdvancedProfile.less';
+import React, { Component } from 'react'
+import Debounce from 'lodash-decorators/debounce'
+import Bind from 'lodash-decorators/bind'
+import { connect } from 'dva'
+import { Button, Menu, Dropdown, Icon, Row, Col, Steps, Card, Popover, Badge, Table, Tooltip, Divider } from 'antd'
+import classNames from 'classnames'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import DescriptionList from 'ant-design-pro/lib/DescriptionList'
+import styles from './AdvancedProfile.less'
 
-const { Step } = Steps;
-const { Description } = DescriptionList;
-const ButtonGroup = Button.Group;
+const { Step } = Steps
+const { Description } = DescriptionList
+const ButtonGroup = Button.Group
 
-const getWindowWidth = () => (window.innerWidth || document.documentElement.clientWidth);
+const getWindowWidth = () => (window.innerWidth || document.documentElement.clientWidth)
 
 const menu = (
   <Menu>
@@ -20,7 +20,7 @@ const menu = (
     <Menu.Item key="2">选项二</Menu.Item>
     <Menu.Item key="3">选项三</Menu.Item>
   </Menu>
-);
+)
 
 const action = (
   <div>
@@ -33,7 +33,7 @@ const action = (
     </ButtonGroup>
     <Button type="primary">主操作</Button>
   </div>
-);
+)
 
 const extra = (
   <Row>
@@ -46,7 +46,7 @@ const extra = (
       <div className={styles.heading}>¥ 568.08</div>
     </Col>
   </Row>
-);
+)
 
 const description = (
   <DescriptionList className={styles.headerList} size="small" col="2">
@@ -57,7 +57,7 @@ const description = (
     <Description term="生效日期">2017-07-07 ~ 2017-08-08</Description>
     <Description term="备注">请于两个工作日内确认</Description>
   </DescriptionList>
-);
+)
 
 const tabList = [{
   key: 'detail',
@@ -65,7 +65,7 @@ const tabList = [{
 }, {
   key: 'rule',
   tab: '规则',
-}];
+}]
 
 const desc1 = (
   <div className={classNames(styles.textSecondary, styles.stepDescription)}>
@@ -75,7 +75,7 @@ const desc1 = (
     </div>
     <div>2016-12-12 12:32</div>
   </div>
-);
+)
 
 const desc2 = (
   <div className={styles.stepDescription}>
@@ -85,7 +85,7 @@ const desc2 = (
     </div>
     <div><a href="">催一下</a></div>
   </div>
-);
+)
 
 const popoverContent = (
   <div style={{ width: 160 }}>
@@ -95,13 +95,13 @@ const popoverContent = (
     </span>
     <div className={styles.textSecondary} style={{ marginTop: 4 }}>耗时：2小时25分钟</div>
   </div>
-);
+)
 
 const customDot = (dot, { status }) => (status === 'process' ? (
   <Popover placement="topLeft" arrowPointAtCenter content={popoverContent}>
     {dot}
   </Popover>
-) : dot);
+) : dot)
 
 const operationTabList = [{
   key: 'tab1',
@@ -112,7 +112,7 @@ const operationTabList = [{
 }, {
   key: 'tab3',
   tab: '操作日志三',
-}];
+}]
 
 const columns = [{
   title: '操作类型',
@@ -137,7 +137,7 @@ const columns = [{
   title: '备注',
   dataIndex: 'memo',
   key: 'memo',
-}];
+}]
 
 @connect(({ profile, loading }) => ({
   profile,
@@ -150,44 +150,44 @@ export default class AdvancedProfile extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch } = this.props
     dispatch({
       type: 'profile/fetchAdvanced',
-    });
+    })
 
-    this.setStepDirection();
-    window.addEventListener('resize', this.setStepDirection);
+    this.setStepDirection()
+    window.addEventListener('resize', this.setStepDirection)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.setStepDirection);
-    this.setStepDirection.cancel();
+    window.removeEventListener('resize', this.setStepDirection)
+    this.setStepDirection.cancel()
   }
 
   onOperationTabChange = (key) => {
-    this.setState({ operationkey: key });
+    this.setState({ operationkey: key })
   }
 
   @Bind()
   @Debounce(200)
   setStepDirection() {
-    const { stepDirection } = this.state;
-    const w = getWindowWidth();
+    const { stepDirection } = this.state
+    const w = getWindowWidth()
     if (stepDirection !== 'vertical' && w <= 576) {
       this.setState({
         stepDirection: 'vertical',
-      });
+      })
     } else if (stepDirection !== 'horizontal' && w > 576) {
       this.setState({
         stepDirection: 'horizontal',
-      });
+      })
     }
   }
 
   render() {
-    const { stepDirection } = this.state;
-    const { profile, loading } = this.props;
-    const { advancedOperation1, advancedOperation2, advancedOperation3 } = profile;
+    const { stepDirection } = this.state
+    const { profile, loading } = this.props
+    const { advancedOperation1, advancedOperation2, advancedOperation3 } = profile
     const contentList = {
       tab1: <Table
         pagination={false}
@@ -207,7 +207,7 @@ export default class AdvancedProfile extends Component {
         dataSource={advancedOperation3}
         columns={columns}
       />,
-    };
+    }
 
     return (
       <PageHeaderLayout
@@ -287,6 +287,6 @@ export default class AdvancedProfile extends Component {
           {contentList[this.state.operationkey]}
         </Card>
       </PageHeaderLayout>
-    );
+    )
   }
 }

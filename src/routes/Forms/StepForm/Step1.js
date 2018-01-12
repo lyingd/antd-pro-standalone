@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'dva';
-import { Form, Input, Button, Select, Divider } from 'antd';
-import { routerRedux } from 'dva/router';
-import styles from './style.less';
+import React from 'react'
+import { connect } from 'dva'
+import { Form, Input, Button, Select, Divider } from 'antd'
+import { routerRedux } from 'dva/router'
+import styles from './style.less'
 
-const { Option } = Select;
+const { Option } = Select
 
 const formItemLayout = {
   labelCol: {
@@ -13,24 +13,24 @@ const formItemLayout = {
   wrapperCol: {
     span: 19,
   },
-};
+}
 
 @Form.create()
 class Step1 extends React.PureComponent {
   render() {
-    const { form, dispatch, data } = this.props;
-    const { getFieldDecorator, validateFields } = form;
+    const { form, dispatch, data } = this.props
+    const { getFieldDecorator, validateFields } = form
     const onValidateForm = () => {
       validateFields((err, values) => {
         if (!err) {
           dispatch({
             type: 'form/saveStepFormData',
             payload: values,
-          });
-          dispatch(routerRedux.push('/form/step-form/confirm'));
+          })
+          dispatch(routerRedux.push('/form/step-form/confirm'))
         }
-      });
-    };
+      })
+    }
     return (
       <div>
         <Form layout="horizontal" className={styles.stepForm} hideRequiredMark>
@@ -113,10 +113,10 @@ class Step1 extends React.PureComponent {
           <p>如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。如果需要，这里可以放一些关于产品的常见问题说明。</p>
         </div>
       </div>
-    );
+    )
   }
 }
 
 export default connect(({ form }) => ({
   data: form.step,
-}))(Step1);
+}))(Step1)

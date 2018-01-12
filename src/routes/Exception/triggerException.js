@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
-import { Button, Spin } from 'antd';
-import { connect } from 'dva';
-import styles from './style.less';
+import React, { PureComponent } from 'react'
+import { Button, Spin } from 'antd'
+import { connect } from 'dva'
+import styles from './style.less'
 
 @connect(state => ({
   isloading: state.error.isloading,
@@ -13,26 +13,26 @@ export default class TriggerException extends PureComponent {
   trigger403 = () => {
     this.setState({
       isloading: true,
-    });
+    })
     this.props.dispatch({
       type: 'error/query403',
-    });
+    })
   };
   trigger500 = () => {
     this.setState({
       isloading: true,
-    });
+    })
     this.props.dispatch({
       type: 'error/query500',
-    });
+    })
   };
   trigger404 = () => {
     this.setState({
       isloading: true,
-    });
+    })
     this.props.dispatch({
       type: 'error/query404',
-    });
+    })
   };
   render() {
     return (
@@ -47,6 +47,6 @@ export default class TriggerException extends PureComponent {
          触发404
         </Button>
       </Spin>
-    );
+    )
   }
 }

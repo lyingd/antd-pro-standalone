@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import { routerRedux, Route, Switch } from 'dva/router';
-import { connect } from 'dva';
-import { Input } from 'antd';
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
-import { getRoutes } from '../../utils/utils';
+import React, { Component } from 'react'
+import { routerRedux, Route, Switch } from 'dva/router'
+import { connect } from 'dva'
+import { Input } from 'antd'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
+import { getRoutes } from '../../utils/utils'
 
 @connect()
 export default class SearchList extends Component {
   handleTabChange = (key) => {
-    const { dispatch, match } = this.props;
+    const { dispatch, match } = this.props
     switch (key) {
       case 'articles':
-        dispatch(routerRedux.push(`${match.url}/articles`));
-        break;
+        dispatch(routerRedux.push(`${match.url}/articles`))
+        break
       case 'applications':
-        dispatch(routerRedux.push(`${match.url}/applications`));
-        break;
+        dispatch(routerRedux.push(`${match.url}/applications`))
+        break
       case 'projects':
-        dispatch(routerRedux.push(`${match.url}/projects`));
-        break;
+        dispatch(routerRedux.push(`${match.url}/projects`))
+        break
       default:
-        break;
+        break
     }
   }
 
@@ -34,7 +34,7 @@ export default class SearchList extends Component {
     }, {
       key: 'projects',
       tab: '项目',
-    }];
+    }]
 
     const mainSearch = (
       <div style={{ textAlign: 'center' }}>
@@ -46,10 +46,10 @@ export default class SearchList extends Component {
           style={{ width: 522 }}
         />
       </div>
-    );
+    )
 
-    const { match, routerData, location } = this.props;
-    const routes = getRoutes(match.path, routerData);
+    const { match, routerData, location } = this.props
+    const routes = getRoutes(match.path, routerData)
 
     return (
       <PageHeaderLayout
@@ -74,6 +74,6 @@ export default class SearchList extends Component {
           }
         </Switch>
       </PageHeaderLayout>
-    );
+    )
   }
 }

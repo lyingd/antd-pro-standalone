@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import moment from 'moment';
-import { connect } from 'dva';
-import { Form, Card, Select, List, Tag, Icon, Avatar, Row, Col, Button } from 'antd';
+import React, { Component } from 'react'
+import moment from 'moment'
+import { connect } from 'dva'
+import { Form, Card, Select, List, Tag, Icon, Avatar, Row, Col, Button } from 'antd'
 
-import StandardFormRow from 'ant-design-pro/lib/StandardFormRow';
-import TagSelect from 'ant-design-pro/lib/TagSelect';
-import styles from './Articles.less';
+import StandardFormRow from 'ant-design-pro/lib/StandardFormRow'
+import TagSelect from 'ant-design-pro/lib/TagSelect'
+import styles from './Articles.less'
 
-const { Option } = Select;
-const FormItem = Form.Item;
+const { Option } = Select
+const FormItem = Form.Item
 
-const pageSize = 5;
+const pageSize = 5
 
 @Form.create()
 @connect(({ list, loading }) => ({
@@ -19,14 +19,14 @@ const pageSize = 5;
 }))
 export default class SearchList extends Component {
   componentDidMount() {
-    this.fetchMore();
+    this.fetchMore()
   }
 
   setOwner = () => {
-    const { form } = this.props;
+    const { form } = this.props
     form.setFieldsValue({
       owner: ['wzj'],
-    });
+    })
   }
 
   fetchMore = () => {
@@ -35,12 +35,12 @@ export default class SearchList extends Component {
       payload: {
         count: pageSize,
       },
-    });
+    })
   }
 
   render() {
-    const { form, list: { list }, loading } = this.props;
-    const { getFieldDecorator } = form;
+    const { form, list: { list }, loading } = this.props
+    const { getFieldDecorator } = form
 
     const owners = [
       {
@@ -63,14 +63,14 @@ export default class SearchList extends Component {
         id: 'ym',
         name: '姚明',
       },
-    ];
+    ]
 
     const IconText = ({ type, text }) => (
       <span>
         <Icon type={type} style={{ marginRight: 8 }} />
         {text}
       </span>
-    );
+    )
 
     const ListContent = ({ data: { content, updatedAt, avatar, owner, href } }) => (
       <div className={styles.listContent}>
@@ -80,7 +80,7 @@ export default class SearchList extends Component {
           <em>{moment(updatedAt).format('YYYY-MM-DD hh:mm')}</em>
         </div>
       </div>
-    );
+    )
 
     const formItemLayout = {
       wrapperCol: {
@@ -88,7 +88,7 @@ export default class SearchList extends Component {
         sm: { span: 24 },
         md: { span: 12 },
       },
-    };
+    }
 
     const loadMore = list.length > 0 ? (
       <div style={{ textAlign: 'center', marginTop: 16 }}>
@@ -96,7 +96,7 @@ export default class SearchList extends Component {
           {loading ? <span><Icon type="loading" /> 加载中...</span> : '加载更多'}
         </Button>
       </div>
-    ) : null;
+    ) : null
 
     return (
       <div>
@@ -231,6 +231,6 @@ export default class SearchList extends Component {
           />
         </Card>
       </div>
-    );
+    )
   }
 }

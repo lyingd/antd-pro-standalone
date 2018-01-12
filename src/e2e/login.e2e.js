@@ -1,24 +1,24 @@
-import Nightmare from 'nightmare';
+import Nightmare from 'nightmare'
 
 describe('Login', () => {
-  let page;
+  let page
   beforeEach(() => {
-    page = Nightmare();
+    page = Nightmare()
     page
       .goto('http://localhost:8000/')
       .evaluate(() => {
-        window.localStorage.setItem('antd-pro-authority', 'guest');
+        window.localStorage.setItem('antd-pro-authority', 'guest')
       })
-      .goto('http://localhost:8000/#/user/login');
-  });
+      .goto('http://localhost:8000/#/user/login')
+  })
 
   it('should login with failure', async () => {
     await page.type('#userName', 'mockuser')
       .type('#password', 'wrong_password')
       .click('button[type="submit"]')
       .wait('.ant-alert-error') // should display error
-      .end();
-  });
+      .end()
+  })
 
   it('should login successfully', async () => {
     const text = await page.type('#userName', 'admin')
@@ -26,7 +26,7 @@ describe('Login', () => {
       .click('button[type="submit"]')
       .wait('.ant-layout-sider h1') // should display error
       .evaluate(() => document.body.innerHTML)
-      .end();
-    expect(text).toContain('<h1>Ant Design Pro</h1>');
-  });
-});
+      .end()
+    expect(text).toContain('<h1>Ant Design Pro</h1>')
+  })
+})

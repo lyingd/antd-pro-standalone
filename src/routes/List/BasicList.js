@@ -1,15 +1,15 @@
-import React, { PureComponent } from 'react';
-import moment from 'moment';
-import { connect } from 'dva';
-import { List, Card, Row, Col, Radio, Input, Progress, Button, Icon, Dropdown, Menu, Avatar } from 'antd';
+import React, { PureComponent } from 'react'
+import moment from 'moment'
+import { connect } from 'dva'
+import { List, Card, Row, Col, Radio, Input, Progress, Button, Icon, Dropdown, Menu, Avatar } from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout';
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
-import styles from './BasicList.less';
+import styles from './BasicList.less'
 
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
-const { Search } = Input;
+const RadioButton = Radio.Button
+const RadioGroup = Radio.Group
+const { Search } = Input
 
 @connect(({ list, loading }) => ({
   list,
@@ -22,11 +22,11 @@ export default class BasicList extends PureComponent {
       payload: {
         count: 5,
       },
-    });
+    })
   }
 
   render() {
-    const { list: { list }, loading } = this.props;
+    const { list: { list }, loading } = this.props
 
     const Info = ({ title, value, bordered }) => (
       <div className={styles.headerInfo}>
@@ -34,7 +34,7 @@ export default class BasicList extends PureComponent {
         <p>{value}</p>
         {bordered && <em />}
       </div>
-    );
+    )
 
     const extraContent = (
       <div className={styles.extraContent}>
@@ -49,14 +49,14 @@ export default class BasicList extends PureComponent {
           onSearch={() => ({})}
         />
       </div>
-    );
+    )
 
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
       pageSize: 5,
       total: 50,
-    };
+    }
 
     const ListContent = ({ data: { owner, createdAt, percent, status } }) => (
       <div className={styles.listContent}>
@@ -72,7 +72,7 @@ export default class BasicList extends PureComponent {
           <Progress percent={percent} status={status} strokeWidth={6} style={{ width: 180 }} />
         </div>
       </div>
-    );
+    )
 
     const menu = (
       <Menu>
@@ -83,7 +83,7 @@ export default class BasicList extends PureComponent {
           <a>删除</a>
         </Menu.Item>
       </Menu>
-    );
+    )
 
     const MoreBtn = () => (
       <Dropdown overlay={menu}>
@@ -91,7 +91,7 @@ export default class BasicList extends PureComponent {
           更多 <Icon type="down" />
         </a>
       </Dropdown>
-    );
+    )
 
     return (
       <PageHeaderLayout>
@@ -143,6 +143,6 @@ export default class BasicList extends PureComponent {
           </Card>
         </div>
       </PageHeaderLayout>
-    );
+    )
   }
 }

@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'dva';
-import { Form, Input, Button, Alert, Divider } from 'antd';
-import { routerRedux } from 'dva/router';
-import { digitUppercase } from '../../../utils/utils';
-import styles from './style.less';
+import React from 'react'
+import { connect } from 'dva'
+import { Form, Input, Button, Alert, Divider } from 'antd'
+import { routerRedux } from 'dva/router'
+import { digitUppercase } from '../../../utils/utils'
+import styles from './style.less'
 
 const formItemLayout = {
   labelCol: {
@@ -12,18 +12,18 @@ const formItemLayout = {
   wrapperCol: {
     span: 19,
   },
-};
+}
 
 @Form.create()
 class Step2 extends React.PureComponent {
   render() {
-    const { form, data, dispatch, submitting } = this.props;
-    const { getFieldDecorator, validateFields } = form;
+    const { form, data, dispatch, submitting } = this.props
+    const { getFieldDecorator, validateFields } = form
     const onPrev = () => {
-      dispatch(routerRedux.push('/form/step-form'));
-    };
+      dispatch(routerRedux.push('/form/step-form'))
+    }
     const onValidateForm = (e) => {
-      e.preventDefault();
+      e.preventDefault()
       validateFields((err, values) => {
         if (!err) {
           dispatch({
@@ -32,10 +32,10 @@ class Step2 extends React.PureComponent {
               ...data,
               ...values,
             },
-          });
+          })
         }
-      });
-    };
+      })
+    }
     return (
       <Form layout="horizontal" className={styles.stepForm}>
         <Alert
@@ -104,11 +104,11 @@ class Step2 extends React.PureComponent {
           </Button>
         </Form.Item>
       </Form>
-    );
+    )
   }
 }
 
 export default connect(({ form, loading }) => ({
   submitting: loading.effects['form/submitStepForm'],
   data: form.step,
-}))(Step2);
+}))(Step2)

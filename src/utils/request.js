@@ -1,5 +1,5 @@
-import fetch from 'dva/fetch';
-import { notification } from 'antd';
+import fetch from 'dva/fetch'
+import { notification } from 'antd'
 
 const codeMessage = {
   200: '服务器成功返回请求的数据',
@@ -17,20 +17,20 @@ const codeMessage = {
   502: '网关错误',
   503: '服务不可用，服务器暂时过载或维护',
   504: '网关超时',
-};
+}
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
-    return response;
+    return response
   }
-  const errortext = codeMessage[response.status] || response.statusText;
+  const errortext = codeMessage[response.status] || response.statusText
   notification.error({
     message: `请求错误 ${response.status}: ${response.url}`,
     description: errortext,
-  });
-  const error = new Error(errortext);
-  error.name = response.status;
-  error.response = response;
-  throw error;
+  })
+  const error = new Error(errortext)
+  error.name = response.status
+  error.response = response
+  throw error
 }
 
 /**
@@ -43,23 +43,23 @@ function checkStatus(response) {
 export default function request(url, options) {
   const defaultOptions = {
     credentials: 'include',
-  };
-  const newOptions = { ...defaultOptions, ...options };
+  }
+  const newOptions = { ...defaultOptions, ...options }
   if (newOptions.method === 'POST' || newOptions.method === 'PUT') {
     newOptions.headers = {
       Accept: 'application/json',
       'Content-Type': 'application/json; charset=utf-8',
       ...newOptions.headers,
-    };
-    newOptions.body = JSON.stringify(newOptions.body);
+    }
+    newOptions.body = JSON.stringify(newOptions.body)
   }
 
   return fetch(url, newOptions)
     .then(checkStatus)
     .then((response) => {
       if (newOptions.method === 'DELETE' || response.status === 204) {
-        return response.text();
+        return response.text()
       }
-      return response.json();
-    });
+      return response.json()
+    })
 }
