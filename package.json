@@ -25,7 +25,6 @@
     "@types/enzyme": "^3.1.6",
     "@types/jest": "^22.0.0",
     "@types/react": "^16.0.33",
-    "@types/react-document-title": "^2.0.1",
     "@types/react-dom": "^16.0.3",
     "ant-design-pro": "^1.0.1",
     "antd": "^3.1.0",
