@@ -7,7 +7,7 @@ for (let i = 0; i < 46; i += 1) {
     key: i,
     disabled: ((i % 6) === 0),
     href: 'https://ant.design',
-    avatar: ['https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png', 'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png'][i % 2],
+    avatar: ['/exImages/eeHMaZBwmTvLdIwMfBpg.png', '/exImages/udxAbMEhpwthVVcjLXik.png'][i % 2],
     no: `TradeCode ${i}`,
     title: `一个任务名称 ${i}`,
     owner: '曲丽丽',
@@ -95,7 +95,7 @@ export function postRule(req, res, u, b) {
       tableListDataSource.unshift({
         key: i,
         href: 'https://ant.design',
-        avatar: ['https://gw.alipayobjects.com/zos/rmsportal/eeHMaZBwmTvLdIwMfBpg.png', 'https://gw.alipayobjects.com/zos/rmsportal/udxAbMEhpwthVVcjLXik.png'][i % 2],
+        avatar: ['/exImages/eeHMaZBwmTvLdIwMfBpg.png', '/exImages/udxAbMEhpwthVVcjLXik.png'][i % 2],
         no: `TradeCode ${i}`,
         title: `一个任务名称 ${i}`,
         owner: '曲丽丽',
@@ -126,6 +126,14 @@ export function postRule(req, res, u, b) {
 }
 
 export default {
-  getRule,
-  postRule,
+  'GET /api/rule': getRule,
+  'POST /api/rule': {
+    $params: {
+      pageSize: {
+        desc: '分页',
+        exp: 2,
+      },
+    },
+    $body: postRule,
+  },
 }

@@ -66,7 +66,7 @@ export default class Monitor extends PureComponent {
               </Row>
               <div className={styles.mapChart}>
                 <Tooltip title="等待后期实现">
-                  <img src="https://gw.alipayobjects.com/zos/rmsportal/HBWnDEUXCnGnGrRfrpKa.png" alt="map" />
+                  <img src="/exImages/HBWnDEUXCnGnGrRfrpKa.png" alt="map" />
                 </Tooltip>
               </div>
             </Card>

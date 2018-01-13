@@ -32,13 +32,13 @@ export default class CardList extends PureComponent {
         </p>
         <div className={styles.contentLink}>
           <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/MjEImQtenlyueSmVEfUD.svg" /> 快速开始
+            <img alt="" src="/exImages/MjEImQtenlyueSmVEfUD.svg" /> 快速开始
           </a>
           <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/NbuDUAuBlIApFuDvWiND.svg" /> 产品简介
+            <img alt="" src="/exImages/NbuDUAuBlIApFuDvWiND.svg" /> 产品简介
           </a>
           <a>
-            <img alt="" src="https://gw.alipayobjects.com/zos/rmsportal/ohOEPSYdDTNnyMbGuyLb.svg" /> 产品文档
+            <img alt="" src="/exImages/ohOEPSYdDTNnyMbGuyLb.svg" /> 产品文档
           </a>
         </div>
       </div>
@@ -46,7 +46,7 @@ export default class CardList extends PureComponent {
 
     const extraContent = (
       <div className={styles.extraImg}>
-        <img alt="这是一个标题" src="https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png" />
+        <img alt="这是一个标题" src="/exImages/RzwpdLnhmvDJToTdfDPe.png" />
       </div>
     )
 

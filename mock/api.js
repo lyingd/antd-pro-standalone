@@ -1,3 +1,4 @@
+import mockjs from 'mockjs'
 import { getUrlParams } from './utils'
 
 const titles = [
@@ -11,34 +12,34 @@ const titles = [
   'Webpack',
 ]
 const avatars = [
-  'https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png', // Alipay
-  'https://gw.alipayobjects.com/zos/rmsportal/zOsKZmFRdUtvpqCImOVY.png', // Angular
-  'https://gw.alipayobjects.com/zos/rmsportal/dURIMkkrRFpPgTuzkwnB.png', // Ant Design
-  'https://gw.alipayobjects.com/zos/rmsportal/sfjbOqnsXXJgNCjCzDBL.png', // Ant Design Pro
-  'https://gw.alipayobjects.com/zos/rmsportal/siCrBXXhmvTQGWPNLBow.png', // Bootstrap
-  'https://gw.alipayobjects.com/zos/rmsportal/kZzEzemZyKLKFsojXItE.png', // React
-  'https://gw.alipayobjects.com/zos/rmsportal/ComBAopevLwENQdKWiIn.png', // Vue
-  'https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png', // Webpack
+  '/exImages/WdGqmHpayyMjiEhcKoVE.png', // Alipay
+  '/exImages/zOsKZmFRdUtvpqCImOVY.png', // Angular
+  '/exImages/dURIMkkrRFpPgTuzkwnB.png', // Ant Design
+  '/exImages/sfjbOqnsXXJgNCjCzDBL.png', // Ant Design Pro
+  '/exImages/siCrBXXhmvTQGWPNLBow.png', // Bootstrap
+  '/exImages/kZzEzemZyKLKFsojXItE.png', // React
+  '/exImages/ComBAopevLwENQdKWiIn.png', // Vue
+  '/exImages/nxkuOJlFJuAUhzlMTCEe.png', // Webpack
 ]
 
 const avatars2 = [
-  'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/cnrhVkzwxjPwAaCfPbdc.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/gaOngJwsRYRaVAuXXcmB.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/ubnKSIfAJTxIgXOKlciN.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/WhxKECPNujWoWEFNdnJE.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/psOgztMplJMGpVEqfcgF.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/ZpBqSxLxVEXfcUNoPKrz.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/laiEnJdGHVOhJrUShBaJ.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/UrQsqscbKEpNuJcvBZBu.png',
+  '/exImages/BiazfanxmamNRoxxVxka.png',
+  '/exImages/cnrhVkzwxjPwAaCfPbdc.png',
+  '/exImages/gaOngJwsRYRaVAuXXcmB.png',
+  '/exImages/ubnKSIfAJTxIgXOKlciN.png',
+  '/exImages/WhxKECPNujWoWEFNdnJE.png',
+  '/exImages/jZUIxmJycoymBprLOUbT.png',
+  '/exImages/psOgztMplJMGpVEqfcgF.png',
+  '/exImages/ZpBqSxLxVEXfcUNoPKrz.png',
+  '/exImages/laiEnJdGHVOhJrUShBaJ.png',
+  '/exImages/UrQsqscbKEpNuJcvBZBu.png',
 ]
 
 const covers = [
-  'https://gw.alipayobjects.com/zos/rmsportal/uMfMFlvUuceEyPpotzlq.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/iZBVOIhGJiAnhplqjvZW.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/uVZonEtjWwmUZPBQfycs.png',
-  'https://gw.alipayobjects.com/zos/rmsportal/gLaIAoVWTtLbBWZNYEMg.png',
+  '/exImages/uMfMFlvUuceEyPpotzlq.png',
+  '/exImages/iZBVOIhGJiAnhplqjvZW.png',
+  '/exImages/uVZonEtjWwmUZPBQfycs.png',
+  '/exImages/gLaIAoVWTtLbBWZNYEMg.png',
 ]
 const desc = [
   '那是一种内在的东西， 他们到达不了，也无法触及的',
@@ -86,15 +87,15 @@ export function fakeList(count) {
       content: '段落示意：蚂蚁金服设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。蚂蚁金服设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态，提供跨越设计与开发的体验解决方案。',
       members: [
         {
-          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ZiESqWwCXBRQoaPONSJe.png',
+          avatar: '/exImages/ZiESqWwCXBRQoaPONSJe.png',
           name: '曲丽丽',
         },
         {
-          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/tBOxZPlITHqwlGjsJWaF.png',
+          avatar: '/exImages/tBOxZPlITHqwlGjsJWaF.png',
           name: '王昭君',
         },
         {
-          avatar: 'https://gw.alipayobjects.com/zos/rmsportal/sBxjgqiuHMGRkIjqlQCd.png',
+          avatar: '/exImages/sBxjgqiuHMGRkIjqlQCd.png',
           name: '董娜娜',
         },
       ],
@@ -289,7 +290,13 @@ export const getActivities = [
 
 
 export default {
-  getNotice,
-  getActivities,
-  getFakeList,
+  'GET /api/project/notice': getNotice,
+  'GET /api/activities': getActivities,
+  'GET /api/fake_list': getFakeList,
+  'POST /api/forms': (req, res) => {
+    res.send({ message: 'Ok' })
+  },
+  'GET /api/tags': mockjs.mock({
+    'list|100': [{ name: '@city', 'value|1-100': 150, 'type|0-2': 1 }],
+  }),
 }
