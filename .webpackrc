@@ -1,6 +1,11 @@
 {
   "entry": "src/index.js",
   "extraBabelPlugins": [
+    ["module-resolver", { 
+      "alias": {
+        "src": "./src"
+			}
+		}],
     "transform-decorators-legacy",
     ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]
   ],
@@ -8,7 +13,11 @@
     "development": {
       "extraBabelPlugins": [
         "dva-hmr"
-      ]
+      ],
+      "devtool": "eval-source-map"
+    },
+    "production": {
+      "devtool": "source-map"
     }
   },
   "ignoreMomentLocale": true,

@@ -1,6 +1,11 @@
 import { createElement } from 'react'
 import dynamic from 'dva/dynamic'
+import memoize from 'lodash/memoize'
+import isArray from 'lodash/isArray'
+import isString from 'lodash/isString'
+import { notification } from 'antd'
 import { getMenuData } from './menu'
+import nav from './nav'
 
 let routerDataCache
 
@@ -13,20 +18,21 @@ const modelNotExisted = (app, model) => (
 
 // wrapper of dynamic
 const dynamicWrapper = (app, models, component) => {
+  const page = isString(component) ? () => import(`../routes${component}`) : component
   // () => require('module')
   // transformed by babel-plugin-dynamic-import-node-sync
-  if (component.toString().indexOf('.then(') < 0) {
+  if (page.toString().indexOf('.then(') < 0) {
     models.forEach((model) => {
       if (modelNotExisted(app, model)) {
         // eslint-disable-next-line
-        app.model(require(`../models/${model}`).default);
+        app.model(require(`../models${model}`).default);
       }
     })
     return (props) => {
       if (!routerDataCache) {
         routerDataCache = getRouterData(app)
       }
-      return createElement(component().default, {
+      return createElement(page().default, {
         ...props,
         routerData: routerDataCache,
       })
@@ -36,14 +42,14 @@ const dynamicWrapper = (app, models, component) => {
   return dynamic({
     app,
     models: () => models.filter(
-      model => modelNotExisted(app, model)).map(m => import(`../models/${m}.js`)
+      model => modelNotExisted(app, model)).map(m => import(`../models${m}.js`)
     ),
     // add routerData prop
     component: () => {
       if (!routerDataCache) {
         routerDataCache = getRouterData(app)
       }
-      return component().then((raw) => {
+      return page().then((raw) => {
         const Component = raw.default || raw
         return props => createElement(Component, {
           ...props,
@@ -67,102 +73,53 @@ function getFlatMenuData(menus) {
   return keys
 }
 
+function alertRouteError(description) {
+  notification.error({
+    message: '路由错误',
+    description,
+    duration: 0,
+  })
+  throw new Error(description)
+}
+
+function innerFlatNavData(navDatas, parentPath, app) {
+  return navDatas.reduce((acc, navData) => {
+    const { name, children, path = '', models, page } = navData.props
+    if (path && !path.startsWith('http') && !path.startsWith('/')) {
+      alertRouteError(`${name || page}-> path[${path}] should starts with "/" or "http" or "https"`)
+    }
+    if (isString(page) && !page.startsWith('/')) {
+      alertRouteError(`${name || path}-> page[${page}] should starts with "/"`)
+    }
+    if (isArray(models) && models.some(model => !model.startsWith('/'))) {
+      alertRouteError(`${name || path || page}-> models[${models.join(', ')}] should starts with "/"`)
+    }
+    const fullPath = `${parentPath}${path}`.replace(/\/+/g, '/')
+    const ret = {}
+    if (page) {
+      ret[fullPath] = {
+        component: dynamicWrapper(app, models || [], page),
+      }
+    }
+    let childrenRet = {}
+    if (children) {
+      childrenRet = innerFlatNavData(isArray(children)
+        ? children
+        : isArray(children.type)
+          ? children.type
+          : [children], fullPath, app)
+    }
+    return {
+      ...acc,
+      ...ret,
+      ...childrenRet,
+    }
+  }, {})
+}
+const getFlatNavData = memoize(innerFlatNavData)
+
 export const getRouterData = (app) => {
-  const routerConfig = {
-    '/': {
-      component: dynamicWrapper(app, ['user', 'login'], () => import('../layouts/BasicLayout')),
-    },
-    '/dashboard/analysis': {
-      component: dynamicWrapper(app, ['chart'], () => import('../routes/Dashboard/Analysis')),
-    },
-    '/dashboard/monitor': {
-      component: dynamicWrapper(app, ['monitor'], () => import('../routes/Dashboard/Monitor')),
-    },
-    '/dashboard/workplace': {
-      component: dynamicWrapper(app, ['project', 'activities', 'chart'], () => import('../routes/Dashboard/Workplace')),
-      // hideInBreadcrumb: true,
-      // name: '工作台',
-      // authority: 'admin',
-    },
-    '/form/basic-form': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/BasicForm')),
-    },
-    '/form/step-form': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm')),
-    },
-    '/form/step-form/info': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm/Step1')),
-    },
-    '/form/step-form/confirm': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm/Step2')),
-    },
-    '/form/step-form/result': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/StepForm/Step3')),
-    },
-    '/form/advanced-form': {
-      component: dynamicWrapper(app, ['form'], () => import('../routes/Forms/AdvancedForm')),
-    },
-    '/list/table-list': {
-      component: dynamicWrapper(app, ['rule'], () => import('../routes/List/TableList')),
-    },
-    '/list/basic-list': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/BasicList')),
-    },
-    '/list/card-list': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/CardList')),
-    },
-    '/list/search': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/List')),
-    },
-    '/list/search/projects': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/Projects')),
-    },
-    '/list/search/applications': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/Applications')),
-    },
-    '/list/search/articles': {
-      component: dynamicWrapper(app, ['list'], () => import('../routes/List/Articles')),
-    },
-    '/profile/basic': {
-      component: dynamicWrapper(app, ['profile'], () => import('../routes/Profile/BasicProfile')),
-    },
-    '/profile/advanced': {
-      component: dynamicWrapper(app, ['profile'], () => import('../routes/Profile/AdvancedProfile')),
-    },
-    '/result/success': {
-      component: dynamicWrapper(app, [], () => import('../routes/Result/Success')),
-    },
-    '/result/fail': {
-      component: dynamicWrapper(app, [], () => import('../routes/Result/Error')),
-    },
-    '/exception/403': {
-      component: dynamicWrapper(app, [], () => import('../routes/Exception/403')),
-    },
-    '/exception/404': {
-      component: dynamicWrapper(app, [], () => import('../routes/Exception/404')),
-    },
-    '/exception/500': {
-      component: dynamicWrapper(app, [], () => import('../routes/Exception/500')),
-    },
-    '/exception/trigger': {
-      component: dynamicWrapper(app, ['error'], () => import('../routes/Exception/triggerException')),
-    },
-    '/user': {
-      component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),
-    },
-    '/user/login': {
-      component: dynamicWrapper(app, ['login'], () => import('../routes/User/Login')),
-    },
-    '/user/register': {
-      component: dynamicWrapper(app, ['register'], () => import('../routes/User/Register')),
-    },
-    '/user/register-result': {
-      component: dynamicWrapper(app, [], () => import('../routes/User/RegisterResult')),
-    },
-    // '/user/:id': {
-    //   component: dynamicWrapper(app, [], () => import('../routes/User/SomeComponent')),
-    // },
-  }
+  const routerConfig = getFlatNavData(nav, '', app)
   // Get name from ./menu.js or just set it in the router data.
   const menuData = getFlatMenuData(getMenuData())
   const routerData = {}
