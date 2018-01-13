@@ -66,8 +66,8 @@
     "nightmare": "^2.10.0"
   },
   "lint-staged": {
-    "**/*.{js,jsx}": "lint-staged:js",
-    "**/*.less": "stylelint --syntax less"
+    "src/**/*.{js,jsx}": "lint-staged:js",
+    "src/**/*.less": "stylelint --syntax less"
   },
   "browserslist": [
     "> 1%",
