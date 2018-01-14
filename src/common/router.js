@@ -7,8 +7,6 @@ import { notification } from 'antd'
 import { getMenuData } from './menu'
 import nav from './nav'
 
-let routerDataCache
-
 const modelNotExisted = (app, model) => (
   // eslint-disable-next-line
   !app._models.some(({ namespace }) => {
@@ -16,44 +14,64 @@ const modelNotExisted = (app, model) => (
   })
 )
 
-// wrapper of dynamic
+// let routerDataCache
+
+// // wrapper of dynamic
+// const dynamicWrapper = (app, models, component) => {
+//   const page = isString(component) ? () => import(`../pages${component}`) : component
+//   // () => require('module')
+//   // transformed by babel-plugin-dynamic-import-node-sync
+//   if (page.toString().indexOf('.then(') < 0) {
+//     models.forEach((model) => {
+//       if (modelNotExisted(app, model)) {
+//         // eslint-disable-next-line
+//         app.model(require(`../models${model}`));
+//       }
+//     })
+//     return (props) => {
+//       if (!routerDataCache) {
+//         routerDataCache = getRouterData(app)
+//       }
+//       return createElement(page(), {
+//         ...props,
+//         routerData: routerDataCache,
+//       })
+//     }
+//   }
+//   // () => import('module')
+//   return dynamic({
+//     app,
+//     models: () => models.filter(
+//       model => modelNotExisted(app, model)).map(m => import(`../models${m}.js`)
+//     ),
+//     // add routerData prop
+//     component: () => {
+//       if (!routerDataCache) {
+//         routerDataCache = getRouterData(app)
+//       }
+//       return page().then((raw) => {
+//         const Component = raw.default || raw
+//         return props => createElement(Component, {
+//           ...props,
+//           routerData: routerDataCache,
+//         })
+//       })
+//     },
+//   })
+// }
 const dynamicWrapper = (app, models, component) => {
-  const page = isString(component) ? () => import(`../routes${component}`) : component
-  // () => require('module')
-  // transformed by babel-plugin-dynamic-import-node-sync
-  if (page.toString().indexOf('.then(') < 0) {
-    models.forEach((model) => {
-      if (modelNotExisted(app, model)) {
-        // eslint-disable-next-line
-        app.model(require(`../models${model}`).default);
-      }
-    })
-    return (props) => {
-      if (!routerDataCache) {
-        routerDataCache = getRouterData(app)
-      }
-      return createElement(page().default, {
-        ...props,
-        routerData: routerDataCache,
-      })
-    }
-  }
-  // () => import('module')
   return dynamic({
     app,
     models: () => models.filter(
       model => modelNotExisted(app, model)).map(m => import(`../models${m}.js`)
     ),
-    // add routerData prop
     component: () => {
-      if (!routerDataCache) {
-        routerDataCache = getRouterData(app)
-      }
+      const page = isString(component) ? () => import(`../pages${component}`) : component
       return page().then((raw) => {
         const Component = raw.default || raw
         return props => createElement(Component, {
           ...props,
-          routerData: routerDataCache,
+          routerData: getRouterData(app),
         })
       })
     },
@@ -118,7 +136,7 @@ function innerFlatNavData(navDatas, parentPath, app) {
 }
 const getFlatNavData = memoize(innerFlatNavData)
 
-export const getRouterData = (app) => {
+export const getRouterData = memoize((app) => {
   const routerConfig = getFlatNavData(nav, '', app)
   // Get name from ./menu.js or just set it in the router data.
   const menuData = getFlatMenuData(getMenuData())
@@ -132,4 +150,4 @@ export const getRouterData = (app) => {
     }
   })
   return routerData
-}
+})

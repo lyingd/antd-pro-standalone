@@ -22,10 +22,10 @@ const app = dva({
 app.use(createLoading())
 
 // 3. Register global model
-app.model(require('./models/global').default)
+app.model(require('./models/global'))
 
 // 4. Router
-app.router(require('./router').default)
+app.router(require('./router'))
 
 // 5. Start
 app.start('#root')
