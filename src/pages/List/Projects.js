@@ -3,7 +3,7 @@ import moment from 'moment'
 import { connect } from 'dva'
 import { Row, Col, Form, Card, Select, List } from 'antd'
 
-import StandardFormRow from 'ant-design-pro/lib/StandardFormRow'
+import StandardFormRow from 'src/components/StandardFormRow'
 import TagSelect from 'ant-design-pro/lib/TagSelect'
 import AvatarList from 'ant-design-pro/lib/AvatarList'
 

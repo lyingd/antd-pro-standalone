@@ -22,9 +22,9 @@ export default
       <Route name="标准列表" path="/basic-list" models={['/list']} page="/List/BasicList" />
       <Route name="卡片列表" path="/card-list" models={['/list']} page="/List/CardList" />
       <Route name="搜索列表" path="/search" page="/List/List" >
-        <Route name="搜索列表（项目）" path="/projects" models={['/list']} page="/List/Projects" />
-        <Route name="搜索列表（应用）" path="/applications" models={['/list']} page="/List/Applications" />
-        <Route name="搜索列表（文章）" path="/articles" models={['/list']} page="/List/Articles" />
+        <Route menu={false} name="搜索列表（文章）" path="/articles" models={['/list']} page="/List/Articles" />
+        <Route menu={false} name="搜索列表（应用）" path="/applications" models={['/list']} page="/List/Applications" />
+        <Route menu={false} name="搜索列表（项目）" path="/projects" models={['/list']} page="/List/Projects" />
       </Route>
     </Route>
     <Route name="详情页" path="/profile" icon="profile">

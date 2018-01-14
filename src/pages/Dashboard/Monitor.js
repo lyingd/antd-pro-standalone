@@ -6,7 +6,7 @@ import Authorized from '../../utils/Authorized'
 import { Pie, WaterWave, Gauge, TagCloud } from 'ant-design-pro/lib/Charts'
 import NumberInfo from 'ant-design-pro/lib/NumberInfo'
 import CountDown from 'ant-design-pro/lib/CountDown'
-import ActiveChart from 'ant-design-pro/lib/ActiveChart'
+import ActiveChart from 'src/components/ActiveChart'
 import styles from './Monitor.less'
 
 const { Secured } = Authorized

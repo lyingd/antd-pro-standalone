@@ -5,7 +5,7 @@ import { Link } from 'dva/router'
 import { Row, Col, Card, List, Avatar } from 'antd'
 
 import PageHeaderLayout from '../../layouts/PageHeaderLayout'
-import EditableLinkGroup from 'ant-design-pro/lib/EditableLinkGroup'
+import EditableLinkGroup from 'src/components/EditableLinkGroup'
 import { Radar } from 'ant-design-pro/lib/Charts'
 
 import styles from './Workplace.less'

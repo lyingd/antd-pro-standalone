@@ -10,11 +10,11 @@ import { enquireScreen } from 'enquire-js'
 import GlobalHeader from 'src/components/GlobalHeader'
 import GlobalFooter from 'ant-design-pro/lib/GlobalFooter'
 import SiderMenu from 'src/components/SiderMenu'
-import NotFound from '../routes/Exception/404'
-import { getRoutes } from '../utils/utils'
-import Authorized from '../utils/Authorized'
-import { getMenuData } from '../common/menu'
-import logo from '../assets/logo.svg'
+import NotFound from 'src/pages/Exception/404'
+import { getRoutes } from 'src/utils/utils'
+import Authorized from 'src/utils/Authorized'
+import { getMenuData } from 'src/common/menu'
+import logo from 'src/assets/logo.svg'
 
 const { Content } = Layout
 const { AuthorizedRoute } = Authorized
