@@ -8,9 +8,14 @@ import NoticeIcon from 'ant-design-pro/lib/NoticeIcon'
 import HeaderSearch from 'ant-design-pro/lib/HeaderSearch'
 import styles from './index.less'
 
+import TopMenu from 'src/components/TopMenu'
+
 const { Header } = Layout
 
 export default class GlobalHeader extends PureComponent {
+  state = {
+    foldMenu: true,
+  }
   componentWillUnmount() {
     this.triggerResizeEvent.cancel()
   }
@@ -52,6 +57,11 @@ export default class GlobalHeader extends PureComponent {
     event.initEvent('resize', true, false)
     window.dispatchEvent(event)
   }
+  more = () => {
+    this.setState({
+      foldMenu: !this.state.foldMenu,
+    })
+  }
   render() {
     const {
       currentUser, collapsed, fetchingNotices, isMobile, logo,
@@ -83,7 +93,18 @@ export default class GlobalHeader extends PureComponent {
           type={collapsed ? 'menu-unfold' : 'menu-fold'}
           onClick={this.toggle}
         />
+        <div
+          className={styles.topMenuContainer}
+          style={{ zIndex: 100 }}
+        >
+          <TopMenu style={{ flexWrap: this.state.foldMenu ? 'nowrap' : 'wrap' }} />
+        </div>
         <div className={styles.right}>
+          <Icon
+            className={styles.more}
+            type={this.state.foldMenu ? 'left' : 'down'}
+            onClick={this.more}
+          />
           <HeaderSearch
             className={`${styles.action} ${styles.search}`}
             placeholder="站内搜索"

@@ -5,6 +5,9 @@
   background: #fff;
   box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
   position: relative;
+  display: flex;
+  align-content: flex-start;
+  align-items: flex-start;
 }
 
 :global {
@@ -46,9 +49,26 @@ i.trigger {
     background: @primary-1;
   }
 }
-
+i.more {
+  font-size: 20px;
+  line-height: 64px;
+  display: inline-block;
+  cursor: pointer;
+  transition: all .3s, padding 0s;
+  padding: 0 24px;
+  background: #fff;
+  &:hover {
+    background: @primary-1;
+  }
+}
+.topMenuContainer {
+  flex: 1;
+  overflow: hidden;
+  line-height: 64px;
+  // display: flex;
+  // flex-direction: row;
+}
 .right {
-  float: right;
   height: 100%;
   .action {
     cursor: pointer;
