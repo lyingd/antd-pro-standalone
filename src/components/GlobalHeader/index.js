@@ -102,7 +102,7 @@ export default class GlobalHeader extends PureComponent {
         <div className={styles.right}>
           <Icon
             className={styles.more}
-            type={this.state.foldMenu ? 'left' : 'down'}
+            type={this.state.foldMenu ? 'down' : 'up'}
             onClick={this.more}
           />
           <HeaderSearch
