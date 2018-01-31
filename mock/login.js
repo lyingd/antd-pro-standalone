@@ -1,3 +1,5 @@
+import { proxy } from './utils'
+
 const loginAccount = (req, res) => {
   const { password, userName, type } = req.body
   if (password === '888888' && userName === 'admin') {
@@ -28,5 +30,5 @@ const register = (req, res) => {
 
 export default {
   'POST /api/register': register,
-  'POST /api/login/account': loginAccount,
+  'POST /api/login/account/': proxy('https://preview.pro.ant.design/'),
 }

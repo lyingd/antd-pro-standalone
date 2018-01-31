@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export const imgMap = {
   user: '/exImages/UjusLxePxWGkttaqqmUI.png',
   a: '/exImages/ZrkcSjizAKNWwJTwcadT.png',
@@ -39,7 +41,24 @@ export function getUrlParams(url) {
   return obj
 }
 
+const isProxy = '__isProxy__'
+
+const proxyWrapper = function (target) {
+  return {
+    [isProxy]: true,
+    target,
+  }
+}
+
+/**
+ * 支持webpack.proxy
+ */
+export const proxy = target => target ? proxyWrapper(target) : proxy
+
+proxy.is = obj => obj === proxy || obj[isProxy]
+
 export default {
   getUrlParams,
   imgMap,
+  proxy,
 }
