@@ -19,15 +19,6 @@ const parseMocks = (mocks) => {
       method = null
     }
     const { target } = value
-    // acc[uri] = httpProxy(methodFilter, isString(target)
-    //   ? {
-    //     target,
-    //     changeOrigin: true,
-    //   }
-    //   : {
-    //     changeOrigin: true,
-    //     ...target,
-    //   })
     acc[uri] = isString(target)
       ? {
         target,
@@ -54,7 +45,7 @@ const proxyMock = fs.readdirSync(path.join(__dirname + '/mock'))
   }, [])
 
 const procyObject = parseMocks(proxyMock)
-console.log(procyObject)
+setTimeout(() => console.log(procyObject), 6000)
 export default {
   entry: 'src/index.js',
   proxy: procyObject,

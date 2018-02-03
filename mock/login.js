@@ -30,5 +30,5 @@ const register = (req, res) => {
 
 export default {
   'POST /api/register': register,
-  'POST /api/login/account/': proxy('https://preview.pro.ant.design/'),
+  'POST /api/login/account': loginAccount,
 }
