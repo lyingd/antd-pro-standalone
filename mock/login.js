@@ -1,4 +1,4 @@
-import { proxy } from './utils'
+// import { proxy } from './utils'
 
 const loginAccount = (req, res) => {
   const { password, userName, type } = req.body
