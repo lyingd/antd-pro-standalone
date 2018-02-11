@@ -65,7 +65,7 @@ export default {
         extraBabelPlugins: [
           'dva-hmr'
         ],
-        devtool: 'eval-source-map'
+        devtool: 'cheap-module-source-map'
       },
       production: {
         devtool: 'source-map'

@@ -15,6 +15,7 @@ import { getRoutes } from 'src/utils/utils'
 import Authorized from 'src/utils/Authorized'
 import { getMenuData } from 'src/common/menu'
 import logo from 'src/assets/logo.svg'
+import ErrorBoundary from 'react-error-boundary'
 
 const { Content } = Layout
 const { AuthorizedRoute } = Authorized
@@ -160,12 +161,12 @@ class BasicLayout extends React.PureComponent {
             <div style={{ minHeight: 'calc(100vh - 260px)' }}>
               <Switch>
                 {
-                  getRoutes(match.path, routerData).map(item =>
+                  getRoutes(match.path, routerData).map(({ component: Page, ...item }) =>
                     (
                       <AuthorizedRoute
                         key={item.key}
                         path={item.path}
-                        component={item.component}
+                        component={props => <ErrorBoundary><Page {...props} /></ErrorBoundary>}
                         exact={item.exact}
                         authority={item.authority}
                         redirectPath="/exception/403"
