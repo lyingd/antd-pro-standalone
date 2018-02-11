@@ -1,4 +1,5 @@
 import moment from 'moment'
+import flattenDeep from 'lodash/flattenDeep'
 
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val
@@ -93,42 +94,61 @@ export function digitUppercase(n) {
   return s.replace(/(零.)*零元/, '元').replace(/(零.)+/g, '零').replace(/^整$/, '零元整')
 }
 
-function getRelation(str1, str2) {
-  if (str1 === str2) {
-    console.warn('Two path are equal!');  // eslint-disable-line
-  }
-  const arr1 = str1.split('/')
-  const arr2 = str2.split('/')
-  if (arr2.every((item, index) => item === arr1[index])) {
-    return 1
-  } else if (arr1.every((item, index) => item === arr2[index])) {
-    return 2
-  }
-  return 3
-}
+// function getRelation(str1, str2) {
+//   if (str1 === str2) {
+//     console.warn('Two path are equal!');  // eslint-disable-line
+//   }
+//   const arr1 = str1.split('/')
+//   const arr2 = str2.split('/')
+//   if (arr2.every((item, index) => item === arr1[index])) {
+//     return 1 // str1包含str2
+//   } else if (arr1.every((item, index) => item === arr2[index])) {
+//     return 2 // str2包含str1
+//   }
+//   return 3 // 互不包含
+// }
+
+// function isAcontainB(a, b) {
+//   return getRelation(a, b) === 1
+// }
+// function isAnotB(a, b) {
+//   return getRelation(a, b) === 3
+// }
 
 export function getRoutes(path, routerData) {
-  let routes = Object.keys(routerData).filter(routePath =>
-    routePath.indexOf(path) === 0 && routePath !== path)
-  routes = routes.map(item => item.replace(path, ''))
-  let renderArr = []
-  renderArr.push(routes[0])
-  for (let i = 1; i < routes.length; i += 1) {
-    let isAdd = false
-    isAdd = renderArr.every(item => getRelation(item, routes[i]) === 3)
-    renderArr = renderArr.filter(item => getRelation(item, routes[i]) !== 1)
-    if (isAdd) {
-      renderArr.push(routes[i])
-    }
-  }
-  const renderRoutes = renderArr.map((item) => {
-    const exact = !routes.some(route => route !== item && getRelation(route, item) === 1)
-    return {
-      ...routerData[`${path}${item}`],
-      key: `${path}${item}`,
-      path: `${path}${item}`,
-      exact,
-    }
-  })
-  return renderRoutes
+  // let routes = Object.keys(routerData).filter(routePath =>
+  //   routePath.indexOf(path) === 0 && routePath !== path)
+  // routes = routes.map(item => item.replace(path, ''))
+  // let renderArr = []
+  // renderArr.push(routes[0])
+  // for (let i = 1; i < routes.length; i += 1) {
+  //   let isAdd = false
+  //   isAdd = renderArr.every(item => isAnotB(item, routes[i]))
+  //   renderArr = renderArr.filter(item => !isAcontainB(item, routes[i]))
+  //   if (isAdd) {
+  //     renderArr.push(routes[i])
+  //   }
+  // }
+  // const renderRoutes = renderArr.map((item) => {
+  //   const exact = !routes.some(route => route !== item && isAcontainB(route, item))
+  //   return {
+  //     ...routerData[`${path}${item}`],
+  //     key: `${path}${item}`,
+  //     path: `${path}${item}`,
+  //     exact,
+  //   }
+  // })
+  // return renderRoutes
+
+  const newRenderRoutes = flattenDeep(Object.keys(routerData[path].children)
+    .map((routePath) => {
+      const route = routerData[routePath]
+      return {
+        ...route,
+        key: routePath,
+        path: routePath,
+        exact: false,
+      }
+    }).filter(item => !!item))
+  return newRenderRoutes
 }

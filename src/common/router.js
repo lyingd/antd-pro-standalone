@@ -66,8 +66,7 @@ const dynamicWrapper = (app, models, component) => {
       model => modelNotExisted(app, model)).map(m => import(`../models${m}.js`)
     ),
     component: () => {
-      const page = isString(component) ? () => import(`../pages${component}`) : component
-      return page().then((raw) => {
+      return component().then((raw) => {
         const Component = raw.default || raw
         return props => createElement(Component, {
           ...props,
@@ -126,6 +125,9 @@ function innerFlatNavData(navDatas, parentPath, app) {
         : isArray(children.type)
           ? children.type
           : [children], fullPath, app)
+      if (ret[fullPath] && ret[fullPath]) {
+        ret[fullPath].children = childrenRet
+      }
     }
     return {
       ...acc,
