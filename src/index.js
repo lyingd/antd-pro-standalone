@@ -12,6 +12,7 @@ import 'moment/locale/zh-cn'
 import FastClick from 'fastclick'
 import './rollbar'
 import onError from './error'
+import routerConfig, { doPersist } from './router'
 
 import './index.less'
 
@@ -23,7 +24,11 @@ const persistConfig = {
 
 // 1. Initialize
 const app = dva({
-  onReducer: rootReducer => persistReducer(persistConfig, rootReducer),
+  onReducer: (rootReducer) => {
+    const newReducer = persistReducer(persistConfig, rootReducer)
+    doPersist()
+    return newReducer
+  },
   history: createHistory(),
   onError,
 })
@@ -35,7 +40,7 @@ app.use(createLoading())
 app.model(require('./models/global'))
 
 // 4. Router
-app.router(require('./router'))
+app.router(routerConfig)
 
 // 5. Start
 app.start('#root')
