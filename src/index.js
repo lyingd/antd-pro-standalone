@@ -1,7 +1,7 @@
 import 'ant-design-pro/dist/ant-design-pro.css'
 import '@babel/polyfill'
 import dva from 'dva'
-import { persistReducer } from 'redux-persist'
+import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
 import createHistory from 'history/createHashHistory'
@@ -12,7 +12,7 @@ import 'moment/locale/zh-cn'
 import FastClick from 'fastclick'
 import './rollbar'
 import onError from './error'
-import routerConfig, { doPersist } from './router'
+import routerConfig from './router'
 
 import './index.less'
 
@@ -22,12 +22,27 @@ const persistConfig = {
   whitelist: ['global', 'user'],
 }
 
+let $persistor
+export function createPersistorIfNecessary(store) {
+  if (!$persistor && store) {
+    $persistor = persistStore(store)
+    const rootReducer = persistReducer(persistConfig, state => state)
+    store.replaceReducer(rootReducer)
+    $persistor.persist()
+  }
+  return $persistor
+}
+
 // 1. Initialize
 const app = dva({
-  onReducer: (rootReducer) => {
-    const newReducer = persistReducer(persistConfig, rootReducer)
-    doPersist()
-    return newReducer
+  onReducer: (reducer) => {
+    if (createPersistorIfNecessary(app._store)) {
+      const newReducer = persistReducer(persistConfig, reducer)
+      setTimeout(() => $persistor && $persistor.persist(), 0)
+      return newReducer
+    } else {
+      return reducer
+    }
   },
   history: createHistory(),
   onError,
