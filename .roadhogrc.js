@@ -44,11 +44,10 @@ const proxyMock = fs.readdirSync(path.join(__dirname + '/mock'))
     return acc
   }, [])
 
-const procyObject = parseMocks(proxyMock)
-setTimeout(() => console.log(procyObject), 6000)
+const proxyObject = parseMocks(proxyMock)
 export default {
   entry: 'src/index.js',
-  proxy: procyObject,
+  proxy: proxyObject,
   extraBabelPlugins: [
       ['module-resolver', {
         alias: {
