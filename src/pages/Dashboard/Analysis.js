@@ -1,18 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { connect } from 'dva'
-import {
-  Row,
-  Col,
-  Icon,
-  Card,
-  Tabs,
-  Table,
-  Radio,
-  DatePicker,
-  Tooltip,
-  Menu,
-  Dropdown,
-} from 'antd'
+import { Row, Col, Icon, Card, Tabs, Table, Radio, DatePicker, Tooltip, Menu, Dropdown } from 'antd'
 import numeral from 'numeral'
 import {
   ChartCard,
@@ -51,7 +39,7 @@ export default class Analysis extends Component {
     salesType: 'all',
     currentTabKey: '',
     rangePickerValue: getTimeDistance('year'),
-  };
+  }
 
   componentDidMount() {
     this.props.dispatch({
@@ -66,19 +54,19 @@ export default class Analysis extends Component {
     })
   }
 
-  handleChangeSalesType = (e) => {
+  handleChangeSalesType = e => {
     this.setState({
       salesType: e.target.value,
     })
-  };
+  }
 
-  handleTabChange = (key) => {
+  handleTabChange = key => {
     this.setState({
       currentTabKey: key,
     })
-  };
+  }
 
-  handleRangePickerChange = (rangePickerValue) => {
+  handleRangePickerChange = rangePickerValue => {
     this.setState({
       rangePickerValue,
     })
@@ -86,9 +74,9 @@ export default class Analysis extends Component {
     this.props.dispatch({
       type: 'chart/fetchSalesData',
     })
-  };
+  }
 
-  selectDate = (type) => {
+  selectDate = type => {
     this.setState({
       rangePickerValue: getTimeDistance(type),
     })
@@ -96,7 +84,7 @@ export default class Analysis extends Component {
     this.props.dispatch({
       type: 'chart/fetchSalesData',
     })
-  };
+  }
 
   isActive(type) {
     const { rangePickerValue } = this.state
@@ -241,7 +229,7 @@ export default class Analysis extends Component {
     }
 
     return (
-      <div>
+      <Fragment>
         <Row gutter={24}>
           <Col {...topColResponsiveProps}>
             <ChartCard
@@ -252,7 +240,7 @@ export default class Analysis extends Component {
                   <Icon type="info-circle-o" />
                 </Tooltip>
               }
-              total={yuan(126560)}
+              total={() => <span dangerouslySetInnerHTML={{ __html: yuan(126560) }} />} // eslint-disable-line
               footer={<Field label="日均销售额" value={`￥${numeral(12423).format('0,0')}`} />}
               contentHeight={46}
             >
@@ -362,7 +350,7 @@ export default class Analysis extends Component {
                       <ul className={styles.rankingList}>
                         {rankingListData.map((item, i) => (
                           <li key={item.title}>
-                            <span className={i < 3 && styles.active}>{i + 1}</span>
+                            <span className={i < 3 ? styles.active : ''}>{i + 1}</span>
                             <span>{item.title}</span>
                             <span>{numeral(item.total).format('0,0')}</span>
                           </li>
@@ -451,9 +439,16 @@ export default class Analysis extends Component {
               <Pie
                 hasLegend
                 subTitle="销售额"
-                total={yuan(salesPieData.reduce((pre, now) => now.y + pre, 0))}
+                total={() => (
+                  <span
+                    // eslint-disable-next-line
+                    dangerouslySetInnerHTML={{
+                      __html: yuan(salesPieData.reduce((pre, now) => now.y + pre, 0)),
+                    }}
+                  />
+                )}
                 data={salesPieData}
-                valueFormat={val => yuan(val)}
+                valueFormat={val => <span dangerouslySetInnerHTML={{ __html: yuan(val) }} />} // eslint-disable-line
                 height={248}
                 lineWidth={4}
               />
@@ -482,7 +477,7 @@ export default class Analysis extends Component {
             ))}
           </Tabs>
         </Card>
-      </div>
+      </Fragment>
     )
   }
 }

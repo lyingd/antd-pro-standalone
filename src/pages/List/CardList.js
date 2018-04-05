@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react'
 import { connect } from 'dva'
 import { Card, Button, Icon, List } from 'antd'
 
-import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 import Ellipsis from 'ant-design-pro/lib/Ellipsis'
+import PageHeaderLayout from '../../layouts/PageHeaderLayout'
 
 import styles from './CardList.less'
 
@@ -51,29 +51,28 @@ export default class CardList extends PureComponent {
     )
 
     return (
-      <PageHeaderLayout
-        title="卡片列表"
-        content={content}
-        extraContent={extraContent}
-      >
+      <PageHeaderLayout title="卡片列表" content={content} extraContent={extraContent}>
         <div className={styles.cardList}>
           <List
             rowKey="id"
             loading={loading}
             grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
             dataSource={['', ...list]}
-            renderItem={item => (item ? (
-              <List.Item key={item.id}>
-                <Card hoverable className={styles.card} actions={[<a>操作一</a>, <a>操作二</a>]}>
-                  <Card.Meta
-                    avatar={<img alt="" className={styles.cardAvatar} src={item.avatar} />}
-                    title={<a href="#">{item.title}</a>}
-                    description={(
-                      <Ellipsis className={styles.item} lines={3}>{item.description}</Ellipsis>
-                    )}
-                  />
-                </Card>
-              </List.Item>
+            renderItem={item =>
+              item ? (
+                <List.Item key={item.id}>
+                  <Card hoverable className={styles.card} actions={[<a>操作一</a>, <a>操作二</a>]}>
+                    <Card.Meta
+                      avatar={<img alt="" className={styles.cardAvatar} src={item.avatar} />}
+                      title={<a href="#">{item.title}</a>}
+                      description={
+                        <Ellipsis className={styles.item} lines={3}>
+                          {item.description}
+                        </Ellipsis>
+                      }
+                    />
+                  </Card>
+                </List.Item>
               ) : (
                 <List.Item>
                   <Button type="dashed" className={styles.newButton}>
@@ -81,7 +80,7 @@ export default class CardList extends PureComponent {
                   </Button>
                 </List.Item>
               )
-            )}
+            }
           />
         </div>
       </PageHeaderLayout>

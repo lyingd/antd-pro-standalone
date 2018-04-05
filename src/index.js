@@ -1,5 +1,6 @@
 import 'ant-design-pro/dist/ant-design-pro.css'
 import '@babel/polyfill'
+import 'url-polyfill'
 import dva from 'dva'
 import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
@@ -9,10 +10,9 @@ import createHistory from 'history/createHashHistory'
 // import createHistory from 'history/createBrowserHistory';
 import createLoading from 'dva-loading'
 import 'moment/locale/zh-cn'
-import FastClick from 'fastclick'
+
 import './rollbar'
 import onError from './error'
-import routerConfig from './router'
 
 import './index.less'
 
@@ -35,7 +35,7 @@ export function createPersistorIfNecessary(store) {
 
 // 1. Initialize
 const app = dva({
-  onReducer: (reducer) => {
+  onReducer: reducer => {
     if (createPersistorIfNecessary(app._store)) {
       const newReducer = persistReducer(persistConfig, reducer)
       setTimeout(() => $persistor && $persistor.persist(), 0)
@@ -52,12 +52,12 @@ const app = dva({
 app.use(createLoading())
 
 // 3. Register global model
-app.model(require('./models/global'))
+app.model(require('./models/global').default)
 
 // 4. Router
-app.router(routerConfig)
+app.router(require('./router').default)
 
 // 5. Start
 app.start('#root')
 
-FastClick.attach(document.body)
+export default app._store // eslint-disable-line

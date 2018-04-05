@@ -1,16 +1,6 @@
 import React, { PureComponent } from 'react'
 
-const Route = ({
-  children,
-  name,
-  icon,
-  path,
-  models,
-  page,
-  menu,
-  auth,
-  ...restProps
-}) => (
+const Route = ({ children, name, icon, path, models, page, menu, auth, ...restProps }) => (
   <PureComponent
     name={name}
     icon={icon}
@@ -20,7 +10,8 @@ const Route = ({
     menu={menu}
     auth={auth}
     {...restProps}
-  >{children}
+  >
+    {children}
   </PureComponent>
 )
 

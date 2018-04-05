@@ -2,16 +2,26 @@ import memoize from 'lodash/memoize'
 import isArray from 'lodash/isArray'
 import nav from './nav'
 
-function innerFormatter(navDatas, parentPath = '', parentAuth) {
+function innerFormatter(navDatas, parentPath = '/', parentAuth) {
   return navDatas.reduce((acc, navData) => {
-    const { name, path, children, auth,
-      menu: isMenu = true, models, page, ...restProps } = navData.props
-    const fullPath = `${parentPath}${path || ''}`.replace(/\/+/g, '/').replace(/^\//, '')
-    const childDatas = children ? innerFormatter(isArray(children)
-      ? children
-      : isArray(children.type)
-        ? children.type
-        : [children], fullPath, auth) : null
+    const {
+      name,
+      path,
+      children,
+      auth,
+      menu: isMenu = true,
+      models,
+      page,
+      ...restProps
+    } = navData.props
+    const fullPath = `${parentPath}${path || ''}`.replace(/\/{2,}/g, '/')
+    const childDatas = children
+      ? innerFormatter(
+          isArray(children) ? children : isArray(children.type) ? children.type : [children],
+          fullPath,
+          auth
+        )
+      : null
     const ret = []
     if (isMenu) {
       const menuNode = {
@@ -27,10 +37,7 @@ function innerFormatter(navDatas, parentPath = '', parentAuth) {
     } else if (children) {
       ret.push(...childDatas)
     }
-    return [
-      ...acc,
-      ...ret,
-    ]
+    return [...acc, ...ret]
   }, [])
 }
 

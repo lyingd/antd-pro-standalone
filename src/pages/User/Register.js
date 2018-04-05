@@ -32,11 +32,19 @@ export default class Register extends Component {
     visible: false,
     help: '',
     prefix: '86',
-  };
+  }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.register.status === 'ok') {
-      this.props.dispatch(routerRedux.push('/user/register-result'))
+  componentDidUpdate(props) {
+    if (props.register.status === 'ok') {
+      const account = props.form.getFieldValue('mail')
+      this.props.dispatch(
+        routerRedux.push({
+          pathname: '/user/register-result',
+          state: {
+            account,
+          },
+        })
+      )
     }
   }
 
@@ -54,7 +62,7 @@ export default class Register extends Component {
         clearInterval(this.interval)
       }
     }, 1000)
-  };
+  }
 
   getPasswordStatus = () => {
     const { form } = this.props
@@ -66,9 +74,9 @@ export default class Register extends Component {
       return 'pass'
     }
     return 'poor'
-  };
+  }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault()
     this.props.form.validateFields({ force: true }, (err, values) => {
       if (!err) {
@@ -81,12 +89,12 @@ export default class Register extends Component {
         })
       }
     })
-  };
+  }
 
-  handleConfirmBlur = (e) => {
+  handleConfirmBlur = e => {
     const { value } = e.target
     this.setState({ confirmDirty: this.state.confirmDirty || !!value })
-  };
+  }
 
   checkConfirm = (rule, value, callback) => {
     const { form } = this.props
@@ -95,7 +103,7 @@ export default class Register extends Component {
     } else {
       callback()
     }
-  };
+  }
 
   checkPassword = (rule, value, callback) => {
     if (!value) {
@@ -123,13 +131,13 @@ export default class Register extends Component {
         callback()
       }
     }
-  };
+  }
 
-  changePrefix = (value) => {
+  changePrefix = value => {
     this.setState({
       prefix: value,
     })
-  };
+  }
 
   renderPasswordProgress = () => {
     const { form } = this.props
@@ -146,7 +154,7 @@ export default class Register extends Component {
         />
       </div>
     ) : null
-  };
+  }
 
   render() {
     const { form, submitting } = this.props
@@ -191,13 +199,7 @@ export default class Register extends Component {
                     validator: this.checkPassword,
                   },
                 ],
-              })(
-                <Input
-                  size="large"
-                  type="password"
-                  placeholder="至少6位密码，区分大小写"
-                />
-              )}
+              })(<Input size="large" type="password" placeholder="至少6位密码，区分大小写" />)}
             </Popover>
           </FormItem>
           <FormItem>
@@ -235,13 +237,7 @@ export default class Register extends Component {
                     message: '手机号格式错误！',
                   },
                 ],
-              })(
-                <Input
-                  size="large"
-                  style={{ width: '80%' }}
-                  placeholder="11位手机号"
-                />
-              )}
+              })(<Input size="large" style={{ width: '80%' }} placeholder="11位手机号" />)}
             </InputGroup>
           </FormItem>
           <FormItem>

@@ -6,8 +6,8 @@ export default class EditableItem extends PureComponent {
   state = {
     value: this.props.value,
     editable: false,
-  };
-  handleChange = (e) => {
+  }
+  handleChange = e => {
     const { value } = e.target
     this.setState({ value })
   }
@@ -24,31 +24,17 @@ export default class EditableItem extends PureComponent {
     const { value, editable } = this.state
     return (
       <div className={styles.editableItem}>
-        {
-          editable ? (
-            <div className={styles.wrapper}>
-              <Input
-                value={value}
-                onChange={this.handleChange}
-                onPressEnter={this.check}
-              />
-              <Icon
-                type="check"
-                className={styles.icon}
-                onClick={this.check}
-              />
-            </div>
-          ) : (
-            <div className={styles.wrapper}>
-              <span>{value || ' '}</span>
-              <Icon
-                type="edit"
-                className={styles.icon}
-                onClick={this.edit}
-              />
-            </div>
-          )
-        }
+        {editable ? (
+          <div className={styles.wrapper}>
+            <Input value={value} onChange={this.handleChange} onPressEnter={this.check} />
+            <Icon type="check" className={styles.icon} onClick={this.check} />
+          </div>
+        ) : (
+          <div className={styles.wrapper}>
+            <span>{value || ' '}</span>
+            <Icon type="edit" className={styles.icon} onClick={this.edit} />
+          </div>
+        )}
       </div>
     )
   }

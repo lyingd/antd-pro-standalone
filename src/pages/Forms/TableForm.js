@@ -1,39 +1,26 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, Fragment } from 'react'
 import { Table, Button, Input, message, Popconfirm, Divider } from 'antd'
 import styles from './style.less'
 
 export default class TableForm extends PureComponent {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      data: props.value,
-    }
-  }
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps) {
     if ('value' in nextProps) {
-      this.setState({
+      return {
         data: nextProps.value,
-      })
+      }
     }
+    return null
+  }
+  state = {
+    data: this.props.value,
+    loading: false,
   }
   getRowByKey(key, newData) {
     return (newData || this.state.data).filter(item => item.key === key)[0]
   }
-  index = 0;
-  cacheOriginData = {};
-  handleSubmit = (e) => {
-    e.preventDefault()
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        this.props.dispatch({
-          type: 'form/submit',
-          payload: values,
-        })
-      }
-    })
-  }
-  toggleEditable(e, key) {
+  index = 0
+  cacheOriginData = {}
+  toggleEditable = (e, key) => {
     e.preventDefault()
     const newData = this.state.data.map(item => ({ ...item }))
     const target = this.getRowByKey(key, newData)
@@ -79,12 +66,10 @@ export default class TableForm extends PureComponent {
   }
   saveRow(e, key) {
     e.persist()
-    // save field when blur input
+    this.setState({
+      loading: true,
+    })
     setTimeout(() => {
-      if (document.activeElement.tagName === 'INPUT' &&
-          document.activeElement !== e.target) {
-        return
-      }
       if (this.clickedCancel) {
         this.clickedCancel = false
         return
@@ -93,12 +78,18 @@ export default class TableForm extends PureComponent {
       if (!target.workId || !target.name || !target.department) {
         message.error('请填写完整成员信息。')
         e.target.focus()
+        this.setState({
+          loading: false,
+        })
         return
       }
       delete target.isNew
       this.toggleEditable(e, key)
       this.props.onChange(this.state.data)
-    }, 10)
+      this.setState({
+        loading: false,
+      })
+    }, 500)
   }
   cancel(e, key) {
     this.clickedCancel = true
@@ -111,109 +102,116 @@ export default class TableForm extends PureComponent {
       delete this.cacheOriginData[key]
     }
     this.setState({ data: newData })
+    this.clickedCancel = false
   }
   render() {
-    const columns = [{
-      title: '成员姓名',
-      dataIndex: 'name',
-      key: 'name',
-      width: '20%',
-      render: (text, record) => {
-        if (record.editable) {
-          return (
-            <Input
-              value={text}
-              autoFocus
-              onChange={e => this.handleFieldChange(e, 'name', record.key)}
-              onBlur={e => this.saveRow(e, record.key)}
-              onKeyPress={e => this.handleKeyPress(e, record.key)}
-              placeholder="成员姓名"
-            />
-          )
-        }
-        return text
+    const columns = [
+      {
+        title: '成员姓名',
+        dataIndex: 'name',
+        key: 'name',
+        width: '20%',
+        render: (text, record) => {
+          if (record.editable) {
+            return (
+              <Input
+                value={text}
+                autoFocus
+                onChange={e => this.handleFieldChange(e, 'name', record.key)}
+                onKeyPress={e => this.handleKeyPress(e, record.key)}
+                placeholder="成员姓名"
+              />
+            )
+          }
+          return text
+        },
       },
-    }, {
-      title: '工号',
-      dataIndex: 'workId',
-      key: 'workId',
-      width: '20%',
-      render: (text, record) => {
-        if (record.editable) {
-          return (
-            <Input
-              value={text}
-              onChange={e => this.handleFieldChange(e, 'workId', record.key)}
-              onBlur={e => this.saveRow(e, record.key)}
-              onKeyPress={e => this.handleKeyPress(e, record.key)}
-              placeholder="工号"
-            />
-          )
-        }
-        return text
+      {
+        title: '工号',
+        dataIndex: 'workId',
+        key: 'workId',
+        width: '20%',
+        render: (text, record) => {
+          if (record.editable) {
+            return (
+              <Input
+                value={text}
+                onChange={e => this.handleFieldChange(e, 'workId', record.key)}
+                onKeyPress={e => this.handleKeyPress(e, record.key)}
+                placeholder="工号"
+              />
+            )
+          }
+          return text
+        },
       },
-    }, {
-      title: '所属部门',
-      dataIndex: 'department',
-      key: 'department',
-      width: '40%',
-      render: (text, record) => {
-        if (record.editable) {
-          return (
-            <Input
-              value={text}
-              onChange={e => this.handleFieldChange(e, 'department', record.key)}
-              onBlur={e => this.saveRow(e, record.key)}
-              onKeyPress={e => this.handleKeyPress(e, record.key)}
-              placeholder="所属部门"
-            />
-          )
-        }
-        return text
+      {
+        title: '所属部门',
+        dataIndex: 'department',
+        key: 'department',
+        width: '40%',
+        render: (text, record) => {
+          if (record.editable) {
+            return (
+              <Input
+                value={text}
+                onChange={e => this.handleFieldChange(e, 'department', record.key)}
+                onKeyPress={e => this.handleKeyPress(e, record.key)}
+                placeholder="所属部门"
+              />
+            )
+          }
+          return text
+        },
       },
-    }, {
-      title: '操作',
-      key: 'action',
-      render: (text, record) => {
-        if (record.editable) {
-          if (record.isNew) {
+      {
+        title: '操作',
+        key: 'action',
+        render: (text, record) => {
+          if (!!record.editable && this.state.loading) {
+            return null
+          }
+          if (record.editable) {
+            if (record.isNew) {
+              return (
+                <span>
+                  <a onClick={e => this.saveRow(e, record.key)}>添加</a>
+                  <Divider type="vertical" />
+                  <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record.key)}>
+                    <a>删除</a>
+                  </Popconfirm>
+                </span>
+              )
+            }
             return (
               <span>
-                <a>保存</a>
+                <a onClick={e => this.saveRow(e, record.key)}>保存</a>
                 <Divider type="vertical" />
-                <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record.key)}>
-                  <a>删除</a>
-                </Popconfirm>
+                <a onClick={e => this.cancel(e, record.key)}>取消</a>
               </span>
             )
           }
           return (
             <span>
-              <a>保存</a>
+              <a onClick={e => this.toggleEditable(e, record.key)}>编辑</a>
               <Divider type="vertical" />
-              <a onClick={e => this.cancel(e, record.key)}>取消</a>
+              <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record.key)}>
+                <a>删除</a>
+              </Popconfirm>
             </span>
           )
-        }
-        return (
-          <span>
-            <a onClick={e => this.toggleEditable(e, record.key)}>编辑</a>
-            <Divider type="vertical" />
-            <Popconfirm title="是否要删除此行？" onConfirm={() => this.remove(record.key)}>
-              <a>删除</a>
-            </Popconfirm>
-          </span>
-        )
+        },
       },
-    }]
+    ]
 
     return (
-      <div>
+      <Fragment>
         <Table
+          loading={this.state.loading}
           columns={columns}
           dataSource={this.state.data}
           pagination={false}
-          rowClassName={(record) => {
+          rowClassName={record => {
             return record.editable ? styles.editable : ''
           }}
         />
@@ -225,7 +223,7 @@ export default class TableForm extends PureComponent {
         >
           新增成员
         </Button>
-      </div>
+      </Fragment>
     )
   }
 }

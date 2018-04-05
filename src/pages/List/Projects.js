@@ -3,9 +3,10 @@ import moment from 'moment'
 import { connect } from 'dva'
 import { Row, Col, Form, Card, Select, List } from 'antd'
 
-import StandardFormRow from 'src/components/StandardFormRow'
 import TagSelect from 'ant-design-pro/lib/TagSelect'
 import AvatarList from 'ant-design-pro/lib/AvatarList'
+import Ellipsis from 'ant-design-pro/lib/Ellipsis'
+import StandardFormRow from 'src/components/StandardFormRow'
 
 import styles from './Projects.less'
 
@@ -32,7 +33,7 @@ export default class CoverCardList extends PureComponent {
     const { form, dispatch } = this.props
     // setTimeout 用于保证获取表单值是在所有表单字段更新完毕的时候
     setTimeout(() => {
-      form.validateFields((err) => {
+      form.validateFields(err => {
         if (!err) {
           // eslint-disable-next-line
           dispatch({
@@ -54,7 +55,7 @@ export default class CoverCardList extends PureComponent {
       <List
         rowKey="id"
         loading={loading}
-        grid={{ gutter: 24, lg: 4, md: 3, sm: 2, xs: 1 }}
+        grid={{ gutter: 24, xl: 4, lg: 3, md: 3, sm: 2, xs: 1 }}
         dataSource={list}
         renderItem={item => (
           <List.Item>
@@ -65,21 +66,19 @@ export default class CoverCardList extends PureComponent {
             >
               <Card.Meta
                 title={<a href="#">{item.title}</a>}
-                description={item.subDescription}
+                description={<Ellipsis lines={2}>{item.subDescription}</Ellipsis>}
               />
               <div className={styles.cardItemContent}>
                 <span>{moment(item.updatedAt).fromNow()}</span>
                 <div className={styles.avatarList}>
                   <AvatarList size="mini">
-                    {
-                      item.members.map((member, i) => (
-                        <AvatarList.Item
-                          key={`${item.id}-avatar-${i}`}
-                          src={member.avatar}
-                          tips={member.name}
-                        />
-                      ))
-                    }
+                    {item.members.map((member, i) => (
+                      <AvatarList.Item
+                        key={`${item.id}-avatar-${i}`}
+                        src={member.avatar}
+                        tips={member.name}
+                      />
+                    ))}
                   </AvatarList>
                 </div>
               </div>
@@ -120,17 +119,10 @@ export default class CoverCardList extends PureComponent {
                 )}
               </FormItem>
             </StandardFormRow>
-            <StandardFormRow
-              title="其它选项"
-              grid
-              last
-            >
+            <StandardFormRow title="其它选项" grid last>
               <Row gutter={16}>
                 <Col lg={8} md={10} sm={10} xs={24}>
-                  <FormItem
-                    {...formItemLayout}
-                    label="作者"
-                  >
+                  <FormItem {...formItemLayout} label="作者">
                     {getFieldDecorator('author', {})(
                       <Select
                         onChange={this.handleFormSubmit}
@@ -143,10 +135,7 @@ export default class CoverCardList extends PureComponent {
                   </FormItem>
                 </Col>
                 <Col lg={8} md={10} sm={10} xs={24}>
-                  <FormItem
-                    {...formItemLayout}
-                    label="好评度"
-                  >
+                  <FormItem {...formItemLayout} label="好评度">
                     {getFieldDecorator('rate', {})(
                       <Select
                         onChange={this.handleFormSubmit}
@@ -163,9 +152,7 @@ export default class CoverCardList extends PureComponent {
             </StandardFormRow>
           </Form>
         </Card>
-        <div className={styles.cardList}>
-          {cardList}
-        </div>
+        <div className={styles.cardList}>{cardList}</div>
       </div>
     )
   }
