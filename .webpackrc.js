@@ -17,9 +17,9 @@ export default {
       ],
       devtool: 'cheap-module-eval-source-map'
     },
-    production: {
-      devtool: 'source-map'
-    }
+    // production: {
+    //   devtool: 'source-map'
+    // }
   },
   ignoreMomentLocale: true,
   theme: './src/theme.js',
