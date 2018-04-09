@@ -23,7 +23,7 @@ const mock = fs.readdirSync(path.join(__dirname + '/mock'))
     }
   }, {})
 
-console.log('所有代理接口：')
-console.log(Object.keys(mock))
+// console.log('所有模拟接口：')
+// console.log(Object.keys(mock))
 
 export default noProxy ? {} : delay(mock, 1000)
