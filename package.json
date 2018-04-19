@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules/ && yarn",
-    "precommit": "npm run lint-staged",
+    "precommit": "lint-staged",
     "start": "cross-env ESLINT=none roadhog dev",
     "start:no-proxy": "cross-env NO_PROXY=true ESLINT=none roadhog dev",
     "build": "cross-env ESLINT=none roadhog build",
@@ -14,7 +14,6 @@
     "lint:style": "stylelint \"src/**/*.less\" --syntax less",
     "lint": "eslint --ext .js src mock tests && npm run lint:style",
     "lint:fix": "eslint --fix --ext .js src mock tests && npm run lint:style",
-    "lint-staged": "lint-staged",
     "lint-staged:js": "eslint --ext .js",
     "test": "roadhog test",
     "test:component": "roadhog test ./src/components",
@@ -78,12 +77,16 @@
     "puppeteer": "^1.1.1"
   },
   "lint-staged": {
-    "src/*.{js,jsx,less}": [
-      "prettier --wirter",
+    "src/*.{js,jsx}": [
+      "prettier --wirte",
+      "eslint --fix",
       "git add"
     ],
-    "src/**/*.{js,jsx}": "eslint --fix --ext .js",
-    "src/**/*.less": "stylelint --syntax less"
+    "src/**/*.less": [
+      "prettier --wirte",
+      "git add",
+      "stylelint --syntax less"
+    ]
   },
   "engines": {
     "node": ">=8.0.0"
